@@ -10,12 +10,12 @@ import { EpisodeService } from '../../services/episode.service';
   providers: [EpisodeService],
   styleUrl: './episode.component.scss'
 })
-export class EpisodeComponent {
-  episode!: Episode;
-  
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private episodeService = inject(EpisodeService);
+export class EpisodeComponent {  
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly episodeService = inject(EpisodeService);
+
+  protected episode?: Episode;
   
   ngOnInit() {
     this.route.params.subscribe(params => {

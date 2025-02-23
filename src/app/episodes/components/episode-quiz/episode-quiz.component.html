@@ -1,1 +1,43 @@
-<p>{{ episode?.title }}</p>
+@if (episode) {
+<form>
+  @for (question of episode.quiz; let qIndex = $index; track qIndex) {
+  <fieldset aria-required="true">
+    <legend>{{ question.question }}</legend>
+    @for (answer of question.answers; let aIndex = $index; track aIndex) {
+    <input
+      id="question-{{ qIndex }}-answer-{{ aIndex }}"
+      type="radio"
+      name="question-{{ qIndex }}"
+      value="{{ aIndex }}"
+      [class.correct]="aIndex === question.correctAnswer"
+      [attr.aria-checked]="false"
+      [attr.aria-describedby]="
+        'question-' + qIndex + '-answer-' + aIndex + '-correction'
+      "
+    />
+    <label for="question-{{ qIndex }}-answer-{{ aIndex }}">
+      {{ answer }}
+    </label>
+    <p
+      [id]="'question-' + qIndex + '-answer-' + aIndex + '-correction'"
+      class="correction"
+      [class.correct]="aIndex === question.correctAnswer"
+    >
+      {{
+        aIndex === question.correctAnswer
+          ? "Bonne réponse !"
+          : "Mauvaise réponse !"
+      }}
+    </p>
+    }
+  </fieldset>
+  }
+</form>
+}
+<nav>
+  @for (clue of episode?.clues; let cIndex = $index; track cIndex) {
+  <a [routerLink]="['../video']" [queryParams]="{ videoType: 'clue', clue: cIndex }">
+    Revoir indice {{ cIndex + 1 }}
+  </a>
+  }
+</nav>

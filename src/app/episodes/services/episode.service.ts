@@ -4,7 +4,8 @@ import { Episode } from '../models';
 
 @Injectable()
 export class EpisodeService {
-  private episodeSubject = new BehaviorSubject<Episode | null>(null);
+  private readonly episodeSubject = new BehaviorSubject<Episode | undefined>(undefined);
+  
   episode$ = this.episodeSubject.asObservable();
   
   setEpisode(episode: Episode) {

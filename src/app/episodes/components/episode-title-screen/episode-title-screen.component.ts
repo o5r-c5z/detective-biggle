@@ -10,19 +10,20 @@ import { EpisodeService } from '../../services/episode.service';
   styleUrl: './episode-title-screen.component.scss',
 })
 export class EpisodeTitleScreenComponent implements OnInit {
-  episode!: Episode;
-  private episodeService = inject(EpisodeService);
-  
+  private readonly episodeService = inject(EpisodeService);
+
+  protected episode?: Episode;
+
+  @HostBinding('style.--episode-title-background')
+  get backgroundImage() {
+    return `url("${this.episode?.titleBackground}")`;
+  }
+
   ngOnInit() {
-    this.episodeService.episode$.subscribe((episode: Episode | null) => {
+    this.episodeService.episode$.subscribe((episode?: Episode) => {
       if (episode) {
         this.episode = episode;
       }
     });
-  }
-  
-  @HostBinding('style.--episode-title-background')
-  get backgroundImage() {
-    return `url("${this.episode.titleBackground}")`;
   }
 }

@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map, mergeMap, tap } from 'rxjs';
+import { Episode, Video } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
-import { Video } from '../../models';
 
 @Component({
   selector: 'app-episode-video',
@@ -13,17 +14,33 @@ export class EpisodeVideoComponent implements OnInit {
   private readonly episodeService = inject(EpisodeService);
   private readonly route = inject(ActivatedRoute);
   
-  protected readonly episode = this.episodeService.getEpisode();
+  protected episode?: Episode;
   protected video?: Video;
   
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const clueNumber = params['clue'];
-      if (!clueNumber) {
-        this.video = this.episode?.investigationVideo;
-      } else {
-        this.video = this.episode?.clues[clueNumber];
-      }
-    });
+    this.episodeService.episode$.pipe(
+      tap((episode?: Episode) => {
+        this.episode = episode;
+      }),
+      mergeMap(() => this.route.queryParams),
+      tap((params) => {
+        const videoType = params['videoType'];
+        switch (videoType) {
+          case 'pedagogicalConcept':
+            this.video = this.episode?.pedagogicalConcept;
+            break;
+          case 'clue':
+            const clueNumber = params['clue'];
+            if (clueNumber) {
+              this.video = this.episode?.clues[clueNumber];
+            }
+            break;
+          case 'investigation':
+          default:
+            this.video = this.episode?.investigation;
+            break;
+        }
+      })
+    ).subscribe();
   }
 }

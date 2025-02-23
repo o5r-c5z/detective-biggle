@@ -1,9 +1,13 @@
 {
     "title": "Des suspects aux dents longues",
     "titleBackground": "episodes/14/Visuel_ui_ep14_02 1.jpg",
-    "investigationVideo": {
+    "investigation": {
         "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
         "title": "Des suspects aux dents longues - Parcours les indices et réponds aux questions à choix multiples"
+    },
+    "pedagogicalConcept": {
+        "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+        "title": "Des suspects aux dents longues - Notion pédagogique"
     },
     "clues": [
         {

@@ -1,7 +1,8 @@
 export interface Episode {
     title: string;
     titleBackground: string;
-    investigationVideo: Video;
+    investigation: Video;
+    pedagogicalConcept: Video;
     clues: Video[];
     quiz: QuizQuestion[];
 }
