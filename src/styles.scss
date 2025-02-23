@@ -1,10 +1,12 @@
 @import "normalize.css";
 
 html {
+  --spacer: 1rem;
+  --default-text-color: #fff;
+
+  color: var(--default-text-color);
   font-size: 10px;
   box-sizing: border-box;
-
-  --spacer: 1rem;
 }
 
 *,
@@ -36,7 +38,7 @@ body {
 .button {
   display: block;
   background-color: #3f52ff;
-  color: #fff;
+  color: var(--default-text-color);
   border-radius: 25px;
   box-shadow: 0 3.62px 3.62px 0 rgba(0, 0, 0, 0.25);
   padding: 2.5rem 1.25rem;
