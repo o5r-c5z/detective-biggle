@@ -1,0 +1,24 @@
+:host {
+  --aspect-ratio: 16 / 9;
+
+  position: relative;
+  display: block;
+  width: min(100%, calc(100vh * var(--aspect-ratio)));
+  aspect-ratio: var(--aspect-ratio);
+  overflow: hidden;
+  background-image: url("/images/Fiche_01_UI_assets 1.png"),
+    var(--episode-title-background);
+  background-position: bottom right, center;
+  background-repeat: no-repeat;
+  background-size: 40%, contain;
+}
+
+.episode-title-screen__links {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacer) * var(--aspect-ratio));
+  position: absolute;
+  right: 5%;
+  bottom: calc(10% * var(--aspect-ratio));
+  width: 31.25%;
+}
