@@ -2,8 +2,15 @@
 
 html {
   font-size: 10px;
+  box-sizing: border-box;
 
   --spacer: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -32,8 +39,8 @@ body {
   color: #fff;
   border-radius: 25px;
   box-shadow: 0 3.62px 3.62px 0 rgba(0, 0, 0, 0.25);
-  padding: 3rem;
-  font-size: 1.75rem;
+  padding: 2.5rem 1.25rem;
+  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   text-decoration: none;

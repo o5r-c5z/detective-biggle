@@ -1,24 +1,33 @@
 :host {
   --aspect-ratio: 16 / 9;
-
   position: relative;
   display: block;
   width: min(100%, calc(100vh * var(--aspect-ratio)));
   aspect-ratio: var(--aspect-ratio);
   overflow: hidden;
-  background-image: url("/images/Fiche_01_UI_assets 1.png"),
-    var(--episode-title-background);
-  background-position: bottom right, center;
+  background-image: var(--episode-title-background);
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 40%, contain;
+  background-size: contain;
 }
 
 .episode-title-screen__links {
+  --image-ratio: 851 / 901;
+  --image-width: 45vw;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacer) * var(--aspect-ratio));
+  justify-content: center;
+  gap: var(--spacer);
   position: absolute;
-  right: 5%;
-  bottom: calc(10% * var(--aspect-ratio));
-  width: 31.25%;
+  bottom: 0;
+  right: 0;
+  padding-top: calc(var(--spacer) * 10);
+  padding-right: 5vw;
+  padding-left: 8.5vw;
+  width: var(--image-width);
+  height: calc(1 / calc(var(--image-ratio)) * var(--image-width));
+  background-image: url("/images/Fiche_01_UI_assets 1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
