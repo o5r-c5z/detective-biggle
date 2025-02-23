@@ -6,8 +6,12 @@ import { Episode } from '../models';
 export class EpisodeService {
   private episodeSubject = new BehaviorSubject<Episode | null>(null);
   episode$ = this.episodeSubject.asObservable();
-
+  
   setEpisode(episode: Episode) {
     this.episodeSubject.next(episode);
+  }
+
+  getEpisode() {
+    return this.episodeSubject.getValue();
   }
 }

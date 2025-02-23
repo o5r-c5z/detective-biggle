@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Episode } from '../models';
-import { EpisodeService } from '../services/episode.service';
+import { Episode } from '../../models';
+import { EpisodeService } from '../../services/episode.service';
 
 @Component({
   selector: 'app-episode',

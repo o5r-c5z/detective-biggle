@@ -1,7 +1,7 @@
 @if (episode) {
 <h1 class="visually-hidden">{{ episode.title }}</h1>
 <nav class="episode-title-screen__links">
-  <a [routerLink]="['video']" class="button"> Accès à l'épisode </a>
+  <a [routerLink]="['video']" [queryParams]="{ clue: 0 }" class="button"> Accès à l'épisode </a>
   <a [routerLink]="['quiz']" class="button"> Accès au quiz de l'épisode </a>
 </nav>
 }

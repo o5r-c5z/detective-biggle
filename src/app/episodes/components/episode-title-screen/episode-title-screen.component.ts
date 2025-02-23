@@ -1,7 +1,7 @@
 import { Component, HostBinding, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Episode } from '../models';
-import { EpisodeService } from '../services/episode.service';
+import { Episode } from '../../models';
+import { EpisodeService } from '../../services/episode.service';
 
 @Component({
   selector: 'app-episode-title-screen',
@@ -12,7 +12,7 @@ import { EpisodeService } from '../services/episode.service';
 export class EpisodeTitleScreenComponent implements OnInit {
   episode!: Episode;
   private episodeService = inject(EpisodeService);
-
+  
   ngOnInit() {
     this.episodeService.episode$.subscribe((episode: Episode | null) => {
       if (episode) {
@@ -20,7 +20,7 @@ export class EpisodeTitleScreenComponent implements OnInit {
       }
     });
   }
-
+  
   @HostBinding('style.--episode-title-background')
   get backgroundImage() {
     return `url("${this.episode.titleBackground}")`;
