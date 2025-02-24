@@ -1,0 +1,33 @@
+:host {
+  --aspect-ratio: 16 / 9;
+  position: relative;
+  display: block;
+  width: min(100%, calc(100vh * var(--aspect-ratio)));
+  aspect-ratio: var(--aspect-ratio);
+  overflow: hidden;
+  background-image: var(--episode-title-background);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.episode-title-screen__links {
+  --image-ratio: 851 / 901;
+  --image-width: 45vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacer);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding-top: calc(var(--spacer) * 10);
+  padding-right: 5vw;
+  padding-left: 8.5vw;
+  width: var(--image-width);
+  height: calc(1 / calc(var(--image-ratio)) * var(--image-width));
+  background-image: url("/images/Fiche_01_UI_assets 1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

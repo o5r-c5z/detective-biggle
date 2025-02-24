@@ -1,0 +1,73 @@
+{
+    "title": "Des suspects aux dents longues",
+    "titleBackground": "episodes/14/Visuel_ui_ep14_02 1.jpg",
+    "investigation": {
+        "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+        "title": "Des suspects aux dents longues - Parcours les indices et réponds aux questions à choix multiples"
+    },
+    "pedagogicalConcept": {
+        "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+        "title": "Des suspects aux dents longues - Notion pédagogique"
+    },
+    "clues": [
+        {
+            "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+            "title": "Des suspects aux dents longues - Indice 1"
+        },
+        {
+            "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+            "title": "Des suspects aux dents longues - Indice 2"
+        },
+        {
+            "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+            "title": "Des suspects aux dents longues - Indice 3"
+        }
+    ],
+    "quiz": [
+        {
+            "question": "Laquelle de ces phrases utilise le comparatif d’égalité ?",
+            "answers": [
+                "The animal is as fast as a horse.",
+                "The animal runs faster than a horse.",
+                "The animal is less fast than a horse."
+            ],
+            "correctAnswer": 0
+        },
+        {
+            "question": "Qu’est-ce que Lily Sunshine a remarqué à propos des griffes de l’animal ?",
+            "answers": [
+                "They were smaller than an eagle’s claws.",
+                "They were longer than an eagle’s claws.",
+                "They were as sharp as an eagle's claws."
+            ],
+            "correctAnswer": 1
+        },
+        {
+            "question": "Selon Alex, quelle caractéristique rendait l’animal aussi rapide ?",
+            "answers": [    
+                "Its powerful legs.",
+                "Its sharp claws.",
+                "Its big ears."
+            ],
+            "correctAnswer": 0
+        },
+        {
+            "question": "Selon toi, laquelle de ces phrases est vraie ?",
+            "answers": [
+                "A bear is smaller than a wolf.",
+                "An owl is as big as an eagle.",
+                "A fox is less heavy than a bison."
+            ],
+            "correctAnswer": 2
+        },
+        {
+            "question": "Selon toi, lequel de ces animaux sauvages a pu voler les provisions du camping ?",
+            "answers": [    
+                "A wolf.",
+                "A bear.",
+                "A cougar."
+            ],
+            "correctAnswer": 1
+        }
+    ]
+}

@@ -1,1 +1,49 @@
-/* You can add global styles to this file, and also import other style files */
+@import "normalize.css";
+
+html {
+  --spacer: 1rem;
+  --default-text-color: #fff;
+
+  color: var(--default-text-color);
+  font-size: 10px;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  font-family: 'Golos Text', sans-serif;
+  font-optical-sizing: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.button {
+  display: block;
+  background-color: #3f52ff;
+  color: var(--default-text-color);
+  border-radius: 25px;
+  box-shadow: 0 3.62px 3.62px 0 rgba(0, 0, 0, 0.25);
+  padding: 2.5rem 1.25rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+}
