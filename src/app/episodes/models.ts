@@ -1,19 +1,19 @@
 export interface Episode {
-    title: string;
-    titleBackground: string;
-    investigation: Video;
-    pedagogicalConcept: Video;
-    clues: Video[];
-    quiz: QuizQuestion[];
+  title: string;
+  titleBackground: string;
+  investigation: Video;
+  pedagogicalConcept: Video;
+  clues: Video[];
+  quiz: QuizStep[];
 }
 
 export interface Video {
-    url: string;
-    title: string;
+  url: string;
+  title: string;
 }
 
-export interface QuizQuestion {
-    question: string;
-    answers: string[];
-    correctAnswer: number;
+export interface QuizStep {
+  question: string;
+  answers: string[];
+  correctAnswer: number;
 }
