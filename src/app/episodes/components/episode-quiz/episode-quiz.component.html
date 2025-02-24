@@ -1,11 +1,13 @@
 @if (episode) {
 <form aria-label="Quiz questions">
-  @if (!isQuizComplete()) { @for (question of episode.quiz; let qIndex = $index;
-  track qIndex) {
-  <fieldset [hidden]="quizStep !== qIndex">
-    <legend>
-      <span class="step">{{ qIndex + 1 }} / {{ episode.quiz.length }}</span>
-      {{ question.question }}
+  @if (!isQuizComplete()) { @for (question of episode.questions; let qIndex =
+  $index; track qIndex) {
+  <fieldset class="episode-quiz__question" [hidden]="quizStep !== qIndex">
+    <legend class="episode-quiz__question-label">
+      <span class="episode-quiz__step"
+        >{{ qIndex + 1 }} / {{ episode.questions.length }}</span
+      >
+      {{ question.label }}
     </legend>
     @for (answer of question.answers; let aIndex = $index; track aIndex) {
     <input
@@ -13,20 +15,24 @@
       type="radio"
       name="question-{{ qIndex }}"
       value="{{ aIndex }}"
+      class="episode-quiz__answer-input"
       [class.correct]="aIndex === question.correctAnswer"
       [attr.aria-checked]="false"
       [attr.aria-describedby]="
         'question-' + qIndex + '-answer-' + aIndex + '-correction'
       "
-      (change)="onAnswerSelected($event, qIndex, aIndex)"
+      
       required
     />
-    <label for="question-{{ qIndex }}-answer-{{ aIndex }}">
+    <label
+      for="question-{{ qIndex }}-answer-{{ aIndex }}"
+      class="episode-quiz__answer-label"
+    >
       {{ answer }}
     </label>
     <p
       [id]="'question-' + qIndex + '-answer-' + aIndex + '-correction'"
-      class="correction"
+      class="episode-quiz__question-correction"
       [class.correct]="aIndex === question.correctAnswer"
     >
       {{
@@ -38,7 +44,11 @@
     }
   </fieldset>
   } } @else {
-  <div role="status" aria-live="polite" class="quiz-completion-message">
+  <div
+    role="status"
+    aria-live="polite"
+    class="episode-quiz__completion-message"
+  >
     <h2>Bravo !</h2>
     <p>Vous avez réussi l'enquête !</p>
     <p>

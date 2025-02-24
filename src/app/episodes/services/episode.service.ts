@@ -30,7 +30,7 @@ export class EpisodeService {
   }
 
   isQuizComplete() {
-    return this.quizStep >= (this.getEpisode()?.quiz.length ?? Infinity);
+    return this.quizStep >= (this.getEpisode()?.questions.length ?? Infinity);
   }
 
   resetQuiz() {

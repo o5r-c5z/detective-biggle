@@ -23,9 +23,9 @@
             "title": "Des suspects aux dents longues - Indice 3"
         }
     ],
-    "quiz": [
+    "questions": [
         {
-            "question": "Laquelle de ces phrases utilise le comparatif d’égalité ?",
+            "label": "Laquelle de ces phrases utilise le comparatif d’égalité ?",
             "answers": [
                 "The animal is as fast as a horse.",
                 "The animal runs faster than a horse.",
@@ -34,7 +34,7 @@
             "correctAnswer": 0
         },
         {
-            "question": "Qu’est-ce que Lily Sunshine a remarqué à propos des griffes de l’animal ?",
+            "label": "Qu’est-ce que Lily Sunshine a remarqué à propos des griffes de l’animal ?",
             "answers": [
                 "They were smaller than an eagle’s claws.",
                 "They were longer than an eagle’s claws.",
@@ -43,7 +43,7 @@
             "correctAnswer": 1
         },
         {
-            "question": "Selon Alex, quelle caractéristique rendait l’animal aussi rapide ?",
+            "label": "Selon Alex, quelle caractéristique rendait l’animal aussi rapide ?",
             "answers": [    
                 "Its powerful legs.",
                 "Its sharp claws.",
@@ -52,7 +52,7 @@
             "correctAnswer": 0
         },
         {
-            "question": "Selon toi, laquelle de ces phrases est vraie ?",
+            "label": "Selon toi, laquelle de ces phrases est vraie ?",
             "answers": [
                 "A bear is smaller than a wolf.",
                 "An owl is as big as an eagle.",
@@ -61,7 +61,7 @@
             "correctAnswer": 2
         },
         {
-            "question": "Selon toi, lequel de ces animaux sauvages a pu voler les provisions du camping ?",
+            "label": "Selon toi, lequel de ces animaux sauvages a pu voler les provisions du camping ?",
             "answers": [    
                 "A wolf.",
                 "A bear.",

@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
+
 @Component({
   selector: 'app-episode-quiz',
   imports: [RouterLink],
@@ -34,10 +35,10 @@ export class EpisodeQuizComponent implements OnInit {
       ? document.getElementById(correctionId)
       : null;
     if (correction) {
-      correction.style.display = 'block';
+      correction.classList.add('active');
     }
     if (
-      selectedAnswerIndex === this.episode?.quiz[questionIndex].correctAnswer
+      selectedAnswerIndex === this.episode?.questions[questionIndex].correctAnswer
     ) {
       const fieldset = input.closest('fieldset');
       if (fieldset) {
@@ -49,7 +50,7 @@ export class EpisodeQuizComponent implements OnInit {
     } else {
       setTimeout(() => {
         if (correction) {
-          correction.style.display = 'none';
+          correction.classList.remove('active');
         }
       }, 2000);
     }
