@@ -1,22 +1,5 @@
 @import "normalize.css";
-
-// Start Reset fieldset and legend
-legend {
-  padding: 0;
-  display: table;
-}
-
-fieldset {
-  border: 0;
-  padding: 0.01em 0 0 0;
-  margin: 0;
-  min-width: 0;
-}
-
-body:not(:-moz-handler-blocked) fieldset {
-  display: table-cell;
-}
-// End Reset fieldset and legend
+@import "./styles/reset-fieldset";
 
 html {
   --beige-color: #e6dccf;
@@ -31,15 +14,17 @@ html {
   --light-danger-color: #ffdcdc;
   --success-color: #00b050;
   --light-success-color: #ccefdc;
+  --text-color: #1f1f1f;
   --shadow-color: rgba(0, 0, 0, 0.25);
 
   --default-background-color: var(--black-color);
+  --default-line-height: 1.15;
   --default-text-color: var(--white-color);
-  --default-border-radius: 20px;
   --spacer: 1rem;
 
   color: var(--default-text-color);
-  font-size: 10px;
+  font-size: 1.15vw;
+  line-height: var(--default-line-height);
   box-sizing: border-box;
 }
 
@@ -73,11 +58,21 @@ body {
   display: block;
   background-color: var(--ultramarine-blue-color);
   color: var(--default-text-color);
-  border-radius: var(--default-border-radius);
   box-shadow: 0 3.62px 3.62px 0 var(--shadow-color);
   padding: 2.5rem 1.25rem;
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
+}
+
+.screen {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background-image: var(--screen-background);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }

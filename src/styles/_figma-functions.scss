@@ -1,0 +1,3 @@
+@function figma-radius-to-rem($number) {
+  @return calc($number / 20) + rem;
+}

@@ -1,72 +1,81 @@
 @if (episode) {
-<form aria-label="Quiz questions">
-  @if (!isQuizComplete()) { @for (question of episode.questions; let qIndex =
-  $index; track qIndex) {
-  <fieldset class="episode-quiz__question" [hidden]="quizStep !== qIndex">
-    <legend class="episode-quiz__question-label">
-      <span class="episode-quiz__step"
-        >{{ qIndex + 1 }} / {{ episode.questions.length }}</span
+  <form aria-label="Quiz">
+    @if (!isQuizComplete()) {
+      @for (
+        question of episode.questions;
+        track question;
+        let qIndex = $index
+      ) {
+        <fieldset class="episode-quiz__question" [hidden]="quizStep !== qIndex">
+          <legend class="episode-quiz__question-label">
+            <span class="episode-quiz__step"
+              >{{ qIndex + 1 }} / {{ episode.questions.length }}</span
+            >
+            {{ question.label }}
+          </legend>
+          @for (answer of question.answers; track answer; let aIndex = $index) {
+            <input
+              required
+              id="question-{{ qIndex }}-answer-{{ aIndex }}"
+              type="radio"
+              name="question-{{ qIndex }}"
+              value="{{ aIndex }}"
+              class="episode-quiz__answer-input"
+              [class.correct]="aIndex === question.correctAnswer"
+              [attr.aria-checked]="false"
+              [attr.aria-describedby]="
+                'question-' + qIndex + '-answer-' + aIndex + '-correction'
+              "
+              (change)="onAnswerSelected($event, qIndex, aIndex)"
+            />
+            <label
+              for="question-{{ qIndex }}-answer-{{ aIndex }}"
+              class="episode-quiz__answer-label"
+            >
+              {{ answer }}
+            </label>
+            <p
+              [id]="'question-' + qIndex + '-answer-' + aIndex + '-correction'"
+              class="episode-quiz__question-correction"
+              [class.correct]="aIndex === question.correctAnswer"
+            >
+              <span>
+                {{
+                  aIndex === question.correctAnswer
+                    ? "Bonne réponse !"
+                    : "Mauvaise réponse !"
+                }}
+              </span>
+            </p>
+          }
+        </fieldset>
+      }
+    } @else {
+      <div
+        role="status"
+        aria-live="polite"
+        class="episode-quiz__completion-message"
       >
-      {{ question.label }}
-    </legend>
-    @for (answer of question.answers; let aIndex = $index; track aIndex) {
-    <input
-      id="question-{{ qIndex }}-answer-{{ aIndex }}"
-      type="radio"
-      name="question-{{ qIndex }}"
-      value="{{ aIndex }}"
-      class="episode-quiz__answer-input"
-      [class.correct]="aIndex === question.correctAnswer"
-      [attr.aria-checked]="false"
-      [attr.aria-describedby]="
-        'question-' + qIndex + '-answer-' + aIndex + '-correction'
-      "
-      
-      required
-    />
-    <label
-      for="question-{{ qIndex }}-answer-{{ aIndex }}"
-      class="episode-quiz__answer-label"
-    >
-      {{ answer }}
-    </label>
-    <p
-      [id]="'question-' + qIndex + '-answer-' + aIndex + '-correction'"
-      class="episode-quiz__question-correction"
-      [class.correct]="aIndex === question.correctAnswer"
-    >
-      {{
-        aIndex === question.correctAnswer
-          ? "Bonne réponse !"
-          : "Mauvaise réponse !"
-      }}
-    </p>
+        <h2>Bravo !</h2>
+        <p>Vous avez réussi l'enquête !</p>
+        <p>
+          <a [routerLink]="['../']"> Retourner au début de l'épisode </a>
+        </p>
+      </div>
     }
-  </fieldset>
-  } } @else {
-  <div
-    role="status"
-    aria-live="polite"
-    class="episode-quiz__completion-message"
-  >
-    <h2>Bravo !</h2>
-    <p>Vous avez réussi l'enquête !</p>
-    <p>
-      <a [routerLink]="['../']"> Retourner au début de l'épisode </a>
-    </p>
-  </div>
-  }
-</form>
+  </form>
 
-@if (!isQuizComplete()) {
-<nav>
-  @for (clue of episode.clues; let cIndex = $index; track cIndex) {
-  <a
-    [routerLink]="['../video']"
-    [queryParams]="{ videoType: 'clue', clue: cIndex }"
-  >
-    Revoir indice {{ cIndex + 1 }}
-  </a>
+  @if (!isQuizComplete()) {
+    <nav class="episode-quiz__clues">
+      @for (clue of episode.clues; track clue; let cIndex = $index) {
+        <a
+          [routerLink]="['../video']"
+          [queryParams]="{ videoType: 'clue', clue: cIndex }"
+          class="button"
+        >
+          Revoir indice {{ cIndex + 1 }}
+        </a>
+      }
+    </nav>
   }
-</nav>
-} }
+}

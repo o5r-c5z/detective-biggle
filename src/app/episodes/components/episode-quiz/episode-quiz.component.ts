@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, HostBinding, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
@@ -11,9 +11,15 @@ import { EpisodeService } from '../../services/episode.service';
 })
 export class EpisodeQuizComponent implements OnInit {
   private readonly episodeService = inject(EpisodeService);
-
+  
   protected episode?: Episode;
   protected quizStep?: number;
+
+  @HostBinding('class.screen')
+  @HostBinding('style.--screen-background')
+  get backgroundImage() {
+    return 'url("/images/Ecran_UI.jpg")';
+  }
 
   ngOnInit() {
     this.episodeService.episode$.subscribe((episode?: Episode) => {
@@ -34,26 +40,24 @@ export class EpisodeQuizComponent implements OnInit {
     const correction = correctionId
       ? document.getElementById(correctionId)
       : null;
-    if (correction) {
-      correction.classList.add('active');
-    }
-    if (
-      selectedAnswerIndex === this.episode?.questions[questionIndex].correctAnswer
-    ) {
-      const fieldset = input.closest('fieldset');
-      if (fieldset) {
-        fieldset.disabled = true;
-      }
-      setTimeout(() => {
-        this.episodeService.incrementQuizStep();
-      }, 2000);
-    } else {
-      setTimeout(() => {
-        if (correction) {
-          correction.classList.remove('active');
-        }
-      }, 2000);
-    }
+    correction?.classList.add('active');
+    // if (
+    //   selectedAnswerIndex === this.episode?.questions[questionIndex].correctAnswer
+    // ) {
+    //   const fieldset = input.closest('fieldset');
+    //   if (fieldset) {
+    //     fieldset.disabled = true;
+    //   }
+    //   setTimeout(() => {
+    //     this.episodeService.incrementQuizStep();
+    //   }, 2000);
+    // } else {
+    //   setTimeout(() => {
+    //     if (correction) {
+    //       correction.classList.remove('active');
+    //     }
+    //   }, 2000);
+    // }
   }
 
   isQuizComplete() {
