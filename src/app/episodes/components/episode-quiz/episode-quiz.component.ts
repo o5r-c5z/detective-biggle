@@ -16,10 +16,6 @@ export class EpisodeQuizComponent implements OnInit {
   protected quizStep?: number;
 
   @HostBinding('class.screen')
-  @HostBinding('style.--screen-background')
-  get backgroundImage() {
-    return 'url("/images/Ecran_UI.jpg")';
-  }
 
   ngOnInit() {
     this.episodeService.episode$.subscribe((episode?: Episode) => {

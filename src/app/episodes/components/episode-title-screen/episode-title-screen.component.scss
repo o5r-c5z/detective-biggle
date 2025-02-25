@@ -1,3 +1,5 @@
+@import "../../../../styles/figma-functions";
+
 :host {
   position: relative;
 }
@@ -21,4 +23,8 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+
+  .button {
+    border-radius: figma-radius-to-rem(40);
+  }
 }

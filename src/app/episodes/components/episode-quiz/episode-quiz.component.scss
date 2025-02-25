@@ -1,6 +1,7 @@
 @import "../../../../styles/figma-functions";
 
 :host {
+  --screen-background: url("/images/Ecran_UI.jpg");
   --episode-quiz__question-correction-height: calc(
     var(--default-line-height) * 1em
   );
@@ -12,6 +13,10 @@
   justify-content: center;
   gap: var(--spacer);
   padding: 0 10%;
+
+  &::after {
+    background-color: rgba(31, 31, 31, 0.8);
+  }
 }
 
 .episode-quiz__question {

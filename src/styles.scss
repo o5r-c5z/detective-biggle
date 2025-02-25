@@ -68,11 +68,26 @@ body {
 
 .screen {
   display: block;
+  position: relative;
   width: 100%;
   aspect-ratio: 16/9;
   overflow: hidden;
-  background-image: var(--screen-background);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+
+  &::before {
+    content: "";
+    z-index: -2;
+    position: absolute;
+    inset: 0;
+    background-image: var(--screen-background);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+  }
 }
