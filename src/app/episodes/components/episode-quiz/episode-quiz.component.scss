@@ -1,7 +1,6 @@
 @import "../../../../styles/figma-functions";
 
 :host {
-  --screen-background: url("/images/Ecran_UI.jpg");
   --episode-quiz__question-correction-height: calc(
     var(--default-line-height) * 1em
   );
@@ -15,7 +14,12 @@
   padding: 0 10%;
 
   &::after {
-    background-color: rgba(31, 31, 31, 0.8);
+    background-color: rgba(
+      31,
+      31,
+      31,
+      var(--screen-background-overlay-opacity)
+    );
   }
 }
 
@@ -43,21 +47,21 @@
   width: 100%;
   background-color: var(--beige-color);
   color: #2b262d;
-  font-size: 1.6rem;
+  font-size: figma-font-size-to-rem(45);
   font-weight: 600;
   text-align: center;
 
   .episode-quiz__step {
     display: block;
     margin-bottom: var(--spacer);
-    font-size: 1.2rem;
+    font-size: figma-font-size-to-rem(35);
     font-weight: 500;
   }
 }
 
 .episode-quiz__answer-label {
   --background-color: var(--white-color);
-  --font-size: 1.2rem;
+  --font-size: #{figma-font-size-to-rem(35)};
   cursor: pointer;
   display: block;
   border: var(--episode-quiz__answer-label-border-width) solid var(--grey-color);
@@ -65,7 +69,7 @@
   padding: calc(var(--spacer) * 1.5) var(--episode-quiz__answer-label-padding-x);
   background-color: var(--background-color);
   color: var(--text-color);
-  font-size: var(--font-size);
+  font-size: var(--font-size); 
   text-align: left;
   position: relative;
 
@@ -153,5 +157,27 @@
     &:nth-child(4) {
       background-color: var(--ultramarine-blue-color);
     }
+  }
+}
+
+.episode-quiz__completion-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacer) / 2);
+
+  h2,
+  p {
+    margin: 0;
+    font-size: figma-font-size-to-rem(90);
+    font-weight: bold;
+  }
+
+  .button {
+    margin-top: calc(var(--spacer) * 1.5);
+    border-radius: figma-radius-to-rem(50);
+    padding: 2.5rem;
+    font-size: figma-font-size-to-rem(32);
   }
 }

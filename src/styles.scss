@@ -1,4 +1,5 @@
 @import "normalize.css";
+@import "./styles/_figma-functions";
 @import "./styles/reset-fieldset";
 
 html {
@@ -60,7 +61,7 @@ body {
   color: var(--default-text-color);
   box-shadow: 0 3.62px 3.62px 0 var(--shadow-color);
   padding: 2.5rem 1.25rem;
-  font-size: 1.5rem;
+  font-size: figma-font-size-to-rem(35);
   font-weight: bold;
   text-align: center;
   text-decoration: none;

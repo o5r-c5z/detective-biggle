@@ -11,11 +11,22 @@ import { EpisodeService } from '../../services/episode.service';
 })
 export class EpisodeQuizComponent implements OnInit {
   private readonly episodeService = inject(EpisodeService);
-  
+
   protected episode?: Episode;
   protected quizStep?: number;
 
   @HostBinding('class.screen')
+  @HostBinding('style.--screen-background')
+  get backgroundImage() {
+    return !this.isQuizComplete()
+      ? `url("/images/Ecran_UI.jpg")`
+      : `url("/images/Table_enquete_UI.png")`;
+  }
+
+  @HostBinding('style.--screen-background-overlay-opacity')
+  get backgroundOverlayOpacity() {
+    return !this.isQuizComplete() ? 0.8 : 0.9;
+  }
 
   ngOnInit() {
     this.episodeService.episode$.subscribe((episode?: Episode) => {
@@ -26,10 +37,14 @@ export class EpisodeQuizComponent implements OnInit {
     });
   }
 
-  onAnswerSelected(
+  protected isQuizComplete() {
+    return this.episodeService.isQuizComplete();
+  }
+
+  protected onAnswerSelected(
     $event: Event,
     questionIndex: number,
-    selectedAnswerIndex: number
+    selectedAnswerIndex: number,
   ) {
     const input = $event.target as HTMLInputElement;
     const correctionId = input.getAttribute('aria-describedby');
@@ -37,26 +52,27 @@ export class EpisodeQuizComponent implements OnInit {
       ? document.getElementById(correctionId)
       : null;
     correction?.classList.add('active');
-    // if (
-    //   selectedAnswerIndex === this.episode?.questions[questionIndex].correctAnswer
-    // ) {
-    //   const fieldset = input.closest('fieldset');
-    //   if (fieldset) {
-    //     fieldset.disabled = true;
-    //   }
-    //   setTimeout(() => {
-    //     this.episodeService.incrementQuizStep();
-    //   }, 2000);
-    // } else {
-    //   setTimeout(() => {
-    //     if (correction) {
-    //       correction.classList.remove('active');
-    //     }
-    //   }, 2000);
-    // }
+    if (
+      selectedAnswerIndex ===
+      this.episode?.questions[questionIndex].correctAnswer
+    ) {
+      const fieldset = input.closest('fieldset');
+      if (fieldset) {
+        fieldset.disabled = true;
+      }
+      setTimeout(() => {
+        this.episodeService.incrementQuizStep();
+      }, 2000);
+    } else {
+      setTimeout(() => {
+        if (correction) {
+          correction.classList.remove('active');
+        }
+      }, 2000);
+    }
   }
 
-  isQuizComplete() {
-    return this.episodeService.isQuizComplete();
+  protected onResetQuiz() {
+    this.episodeService.resetQuiz();
   }
 }
