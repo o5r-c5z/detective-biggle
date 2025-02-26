@@ -20,7 +20,7 @@ export class EpisodeQuizComponent implements OnInit {
   get backgroundImage() {
     return !this.isQuizComplete()
       ? `url("/images/Ecran_UI.jpg")`
-      : `url("/images/Table_enquete_UI.png")`;
+      : `url("/images/Table_enquete_UI.jpg")`;
   }
 
   @HostBinding('style.--screen-background-overlay-opacity')

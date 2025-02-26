@@ -2,10 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostBinding,
   inject,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import Player from '@vimeo/player';
 import { mergeMap, tap } from 'rxjs';
 import { Episode, Video } from '../../models';
@@ -13,19 +14,33 @@ import { EpisodeService } from '../../services/episode.service';
 
 @Component({
   selector: 'app-episode-video',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './episode-video.component.html',
   styleUrl: './episode-video.component.scss',
 })
 export class EpisodeVideoComponent implements AfterViewInit {
-  @ViewChild('playerContainer') playerContainer!: ElementRef;
-
   private readonly episodeService = inject(EpisodeService);
   private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
+  private player?: Player;
 
   protected episode?: Episode;
   protected video?: Video;
+  protected videoEnded = false;
+
+  @ViewChild('playerContainer') playerContainer!: ElementRef;
+
+  @HostBinding('class.screen')
+  @HostBinding('style.--screen-background')
+  get backgroundImage() {
+    return !this.videoEnded
+      ? `url("/images/Tableau_UI.jpg")`
+      : `url("/images/Decors_Bureau 1.jpg")`;
+  }
+
+  @HostBinding('style.--screen-background-overlay-opacity')
+  get backgroundOverlayOpacity() {
+    return this.videoEnded ? 0.45 : 0.8;
+  }
 
   ngAfterViewInit() {
     this.episodeService.episode$
@@ -54,21 +69,31 @@ export class EpisodeVideoComponent implements AfterViewInit {
         }),
       )
       .subscribe(() => {
-        console.log('video', this.video);
-        if (!this.video) {
-          return;
-        }
-        const player = new Player(this.playerContainer.nativeElement, {
-          url: this.video?.url,
-        });
-        player.play();
-        player.on('ended', () => {
-          this.onVideoEnded();
-        });
+        this.initializePlayer();
       });
   }
 
-  private onVideoEnded() {
-    this.router.navigate(['../quiz'], { relativeTo: this.route });
+  private initializePlayer() {
+    if (!this.video) {
+      return;
+    }
+    this.player = new Player(this.playerContainer.nativeElement, {
+      url: this.video?.url,
+      responsive: true,
+    });
+    this.player.play();
+    this.player.on('ended', () => {
+      this.videoEnded = true;
+    });
+  }
+
+  protected restartVideo() {
+    this.videoEnded = false;
+    this.player?.play();
+  }
+
+  protected goToPedagogicalConcept() {
+    this.videoEnded = false;
+    this.player?.play();
   }
 }
