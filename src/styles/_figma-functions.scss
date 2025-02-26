@@ -1,7 +1,9 @@
+@use "sass:math";
+
 @function figma-radius-to-rem($number) {
-  @return #{$number / 20}rem;
+  @return math.div($number, 20)rem;
 }
 
 @function figma-font-size-to-rem($number) {
-  @return #{$number / 28.125}rem;
+  @return math.div($number, 28.125)rem;
 }
