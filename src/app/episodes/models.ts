@@ -4,7 +4,7 @@ export interface Episode {
   investigation: Video;
   pedagogicalConcept: Video;
   clues: Video[];
-  quiz: QuizStep[];
+  questions: QuizQuestion[];
 }
 
 export interface Video {
@@ -12,8 +12,8 @@ export interface Video {
   title: string;
 }
 
-export interface QuizStep {
-  question: string;
+export interface QuizQuestion {
+  label: string;
   answers: string[];
   correctAnswer: number;
 }

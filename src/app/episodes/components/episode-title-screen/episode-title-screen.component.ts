@@ -14,7 +14,8 @@ export class EpisodeTitleScreenComponent implements OnInit {
 
   protected episode?: Episode;
 
-  @HostBinding('style.--episode-title-background')
+  @HostBinding('class.screen')
+  @HostBinding('style.--screen-background')
   get backgroundImage() {
     return `url("${this.episode?.titleBackground}")`;
   }

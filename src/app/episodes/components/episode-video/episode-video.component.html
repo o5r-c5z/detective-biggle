@@ -1,4 +1,15 @@
-@if (video) {
-<p>{{ video.title }}</p>
-<p>{{ video.url }}</p>
+<div #playerContainer id="player-container" [class.active]="!videoEnded"></div>
+
+@if (videoEnded) {
+  <nav class="episode-video__nav">
+    <a id="go-to-quiz-button" class="button" [routerLink]="['../quiz']">
+      Lancer le quiz !
+    </a>
+    <a class="go-back-button button" (click)="restartVideo()">
+      Revoir toute la vidéo
+    </a>
+    <a class="go-back-button button" (click)="goToPedagogicalConcept()">
+      Revoir le concept pédagogique
+    </a>
+  </nav>
 }

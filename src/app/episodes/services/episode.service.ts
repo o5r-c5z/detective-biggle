@@ -26,11 +26,10 @@ export class EpisodeService {
 
   incrementQuizStep() {
     this.quizStepSubject.next(this.quizStep + 1);
-    console.log('quizStep', this.quizStep);
   }
 
   isQuizComplete() {
-    return this.quizStep >= (this.getEpisode()?.quiz.length ?? Infinity);
+    return this.quizStep >= (this.getEpisode()?.questions.length ?? Infinity);
   }
 
   resetQuiz() {

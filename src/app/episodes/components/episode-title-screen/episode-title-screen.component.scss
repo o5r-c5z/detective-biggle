@@ -1,14 +1,7 @@
+@import "../../../../styles/figma-functions";
+
 :host {
-  --aspect-ratio: 16 / 9;
   position: relative;
-  display: block;
-  width: min(100%, calc(100vh * var(--aspect-ratio)));
-  aspect-ratio: var(--aspect-ratio);
-  overflow: hidden;
-  background-image: var(--episode-title-background);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 
 .episode-title-screen__links {
@@ -17,7 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--spacer);
+  gap: calc(var(--spacer) * 2);
   position: absolute;
   bottom: 0;
   right: 0;
@@ -30,4 +23,9 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+
+  .button {
+    border-radius: figma-radius-to-rem(40);
+    font-size: figma-font-size-to-rem(37);
+  }
 }

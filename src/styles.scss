@@ -1,11 +1,31 @@
 @import "normalize.css";
+@import "./styles/_figma-functions";
+@import "./styles/reset-fieldset";
 
 html {
+  --beige-color: #e6dccf;
+  --black-color: #000;
+  --green-color: #30c97f;
+  --grey-color: #959595;
+  --pink-color: #fb80ac;
+  --sky-blue-color: #45bcff;
+  --ultramarine-blue-color: #3f52ff;
+  --white-color: #fff;
+  --danger-color: #ff5252;
+  --light-danger-color: #ffdcdc;
+  --success-color: #00b050;
+  --light-success-color: #ccefdc;
+  --text-color: #1f1f1f;
+  --shadow-color: rgba(0, 0, 0, 0.25);
+
+  --default-background-color: var(--black-color);
+  --default-line-height: 1.15;
+  --default-text-color: var(--white-color);
   --spacer: 1rem;
-  --default-text-color: #fff;
 
   color: var(--default-text-color);
-  font-size: 10px;
+  font-size: 1.15vw;
+  line-height: var(--default-line-height);
   box-sizing: border-box;
 }
 
@@ -18,8 +38,8 @@ html {
 body {
   width: 100vw;
   height: 100vh;
-  background-color: #000;
-  font-family: 'Golos Text', sans-serif;
+  background-color: var(--default-background-color);
+  font-family: "Golos Text", sans-serif;
   font-optical-sizing: auto;
 }
 
@@ -37,13 +57,38 @@ body {
 
 .button {
   display: block;
-  background-color: #3f52ff;
+  background-color: var(--ultramarine-blue-color);
   color: var(--default-text-color);
-  border-radius: 25px;
-  box-shadow: 0 3.62px 3.62px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3.62px 3.62px 0 var(--shadow-color);
   padding: 2.5rem 1.25rem;
-  font-size: 1.5rem;
+  font-size: figma-font-size-to-rem(35);
   font-weight: bold;
   text-align: center;
   text-decoration: none;
+}
+
+.screen {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    z-index: -2;
+    position: absolute;
+    inset: 0;
+    background-image: var(--screen-background);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+  }
 }

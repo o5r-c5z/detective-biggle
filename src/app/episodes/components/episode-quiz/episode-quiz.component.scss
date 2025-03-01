@@ -1,3 +1,183 @@
-.correction {
+@import "../../../../styles/figma-functions";
+
+:host {
+  --episode-quiz__question-correction-height: calc(
+    var(--default-line-height) * 1em
+  );
+  --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
+  --episode-quiz__answer-label-border-width: 2px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacer);
+  padding: 0 10%;
+
+  &::after {
+    background-color: rgba(
+      31,
+      31,
+      31,
+      var(--screen-background-overlay-opacity)
+    );
+  }
+}
+
+.episode-quiz__question {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.episode-quiz__answer-input {
   display: none;
+}
+
+.episode-quiz__question-label {
+  margin-bottom: calc(
+    var(--spacer) + var(--episode-quiz__question-correction-height)
+  );
+  border: 8px solid var(--white-color);
+  border-radius: figma-radius-to-rem(30);
+  padding: calc(var(--spacer) * 1.5);
+  width: 100%;
+  background-color: var(--beige-color);
+  color: #2b262d;
+  font-size: figma-font-size-to-rem(45);
+  font-weight: 600;
+  text-align: center;
+
+  .episode-quiz__step {
+    display: block;
+    margin-bottom: var(--spacer);
+    font-size: figma-font-size-to-rem(35);
+    font-weight: 500;
+  }
+}
+
+.episode-quiz__answer-label {
+  --background-color: var(--white-color);
+  --font-size: #{figma-font-size-to-rem(35)};
+  cursor: pointer;
+  display: block;
+  border: var(--episode-quiz__answer-label-border-width) solid var(--grey-color);
+  border-radius: figma-radius-to-rem(30);
+  padding: calc(var(--spacer) * 1.5) var(--episode-quiz__answer-label-padding-x);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: var(--font-size); 
+  text-align: left;
+  position: relative;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    border: 2px solid var(--background-color);
+    border-radius: 50%;
+    width: var(--font-size);
+    height: var(--font-size);
+    box-shadow: 0 0 0 1px var(--black-color);
+  }
+
+  .episode-quiz__answer-input:checked + & {
+    --background-color: var(--light-danger-color);
+    border-color: var(--danger-color);
+
+    &::before {
+      border-color: var(--light-danger-color);
+      background-color: var(--danger-color);
+      box-shadow: 0 0 0 1px var(--danger-color);
+    }
+  }
+
+  .episode-quiz__answer-input.correct:checked + & {
+    --background-color: var(--light-success-color);
+    border-color: var(--success-color);
+
+    &::before {
+      border-color: var(--light-success-color);
+      background-color: var(--success-color);
+      box-shadow: 0 0 0 1px var(--success-color);
+    }
+  }
+}
+
+.episode-quiz__question-correction {
+  margin: 0;
+  padding-left: calc(
+    var(--episode-quiz__answer-label-border-width) +
+      var(--episode-quiz__answer-label-padding-x)
+  );
+  height: var(--episode-quiz__question-correction-height);
+  color: var(--danger-color);
+
+  > * {
+    display: none;
+  }
+
+  &.correct {
+    color: var(--success-color);
+  }
+
+  &.active > * {
+    display: inline-block;
+  }
+}
+
+.episode-quiz__clues {
+  --gap: var(--spacer);
+  display: flex;
+  gap: var(--gap);
+  justify-content: center;
+
+  .button {
+    border-radius: figma-radius-to-rem(30);
+    padding: 1.5rem;
+    width: 25%;
+    color: var(--text-color);
+
+    &:nth-child(1) {
+      background-color: var(--green-color);
+    }
+
+    &:nth-child(2) {
+      background-color: var(--pink-color);
+    }
+
+    &:nth-child(3) {
+      background-color: var(--sky-blue-color);
+    }
+
+    &:nth-child(4) {
+      background-color: var(--ultramarine-blue-color);
+    }
+  }
+}
+
+.episode-quiz__completion-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacer) / 2);
+
+  h2,
+  p {
+    margin: 0;
+    font-size: figma-font-size-to-rem(90);
+    font-weight: bold;
+  }
+
+  .button {
+    margin-top: calc(var(--spacer) * 1.5);
+    border-radius: figma-radius-to-rem(50);
+    padding: 2.5rem;
+    font-size: figma-font-size-to-rem(32);
+  }
 }
