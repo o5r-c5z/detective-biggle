@@ -2,27 +2,31 @@
     "title": "Des suspects aux dents longues",
     "titleBackground": "episodes/14/Visuel_ui_ep14_02 1.jpg",
     "investigation": {
-        "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+        "url": "https://player.vimeo.com/video/1061193449?h=68523d71cf",
         "title": "Des suspects aux dents longues - Parcours les indices et réponds aux questions à choix multiples"
     },
     "pedagogicalConcept": {
-        "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+        "url": "https://player.vimeo.com/video/1061193071?h=fa3a8fb7be",
         "title": "Des suspects aux dents longues - Notion pédagogique"
     },
     "clues": [
         {
-            "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+            "url": "https://player.vimeo.com/video/1061193237?h=7573e036c8",
             "title": "Des suspects aux dents longues - Indice 1"
         },
         {
-            "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+            "url": "https://player.vimeo.com/video/1061193321?h=e49771d30a",
             "title": "Des suspects aux dents longues - Indice 2"
         },
         {
-            "url": "https://player.vimeo.com/video/1057450355?h=53df62a2db",
+            "url": "https://player.vimeo.com/video/1061193375?h=caab505b88",
             "title": "Des suspects aux dents longues - Indice 3"
         }
     ],
+    "resolution": {
+        "url": "https://player.vimeo.com/video/1061193964?h=81c9dabb40",
+        "title": "Des suspects aux dents longues - Résolution"
+    },
     "questions": [
         {
             "label": "Laquelle de ces phrases utilise le comparatif d’égalité ?",

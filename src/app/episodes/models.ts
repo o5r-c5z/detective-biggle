@@ -4,6 +4,7 @@ export interface Episode {
   investigation: Video;
   pedagogicalConcept: Video;
   clues: Video[];
+  resolution: Video;
   questions: QuizQuestion[];
 }
 

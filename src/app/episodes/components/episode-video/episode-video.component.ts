@@ -71,6 +71,9 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
                 this.video = this.episode?.clues[clueNumber];
               }
               break;
+            case 'resolution':
+              this.video = this.episode?.resolution;
+              break;
             case 'investigation':
             default:
               this.video = this.episode?.investigation;
