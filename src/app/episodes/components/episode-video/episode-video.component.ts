@@ -4,6 +4,7 @@ import {
   ElementRef,
   HostBinding,
   inject,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -11,6 +12,9 @@ import Player from '@vimeo/player';
 import { mergeMap, tap } from 'rxjs';
 import { Episode, Video } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
+import { AudioService } from '../../services/audio.service';
+import { AnnouncementService } from '../../services/announcement.service';
+import { NavigationTrackerService, ScreenType } from '../../services/navigation-tracker.service';
 
 @Component({
   selector: 'app-episode-video',
@@ -18,10 +22,14 @@ import { EpisodeService } from '../../services/episode.service';
   templateUrl: './episode-video.component.html',
   styleUrl: './episode-video.component.scss',
 })
-export class EpisodeVideoComponent implements AfterViewInit {
+export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   private readonly episodeService = inject(EpisodeService);
   private readonly route = inject(ActivatedRoute);
+  private readonly audioService = inject(AudioService);
+  private readonly announcementService = inject(AnnouncementService);
+  private readonly navigationTracker = inject(NavigationTrackerService);
   private player?: Player;
+  private audioResumed = false;
 
   protected episode?: Episode;
   protected video?: Video;
@@ -43,6 +51,13 @@ export class EpisodeVideoComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    // Update navigation tracker to video screen
+    this.navigationTracker.setCurrentScreen(ScreenType.VIDEO);
+    
+    // Pause background music when entering video component
+    this.audioService.pause();
+    this.announcementService.announce('Background music paused. Video will start playing.');
+
     this.episodeService.episode$
       .pipe(
         tap((episode?: Episode) => {
@@ -73,6 +88,28 @@ export class EpisodeVideoComponent implements AfterViewInit {
       });
   }
 
+  ngOnDestroy() {
+    // Update navigation tracker to non-video screen
+    this.navigationTracker.setCurrentScreen(ScreenType.NON_VIDEO);
+    
+    // Only restart audio if it hasn't already been resumed by video ending
+    if (!this.audioResumed) {
+      this.restartBackgroundMusic();
+    }
+    
+    // Clean up the player
+    this.player?.destroy();
+  }
+
+  /**
+   * Helper method to restart background music from the beginning
+   */
+  private restartBackgroundMusic(): void {
+    this.audioService.play(true); // true = restart from beginning
+    this.audioResumed = true;
+    this.announcementService.announce('Background music resumed from the beginning.');
+  }
+
   private initializePlayer() {
     if (!this.video) {
       return;
@@ -81,19 +118,57 @@ export class EpisodeVideoComponent implements AfterViewInit {
       url: this.video?.url,
       responsive: true,
     });
+    
+    // Add player event handlers
+    this.player.on('loaded', () => {
+      // Set ARIA label for the iframe for better accessibility
+      const iframe = this.playerContainer.nativeElement.querySelector('iframe');
+      if (iframe) {
+        iframe.setAttribute('aria-label', `Video: ${this.video?.title || 'Educational video'}`);
+        iframe.setAttribute('title', this.video?.title || 'Educational video');
+      }
+      
+      this.announcementService.announce(`Video loaded: ${this.video?.title || 'Educational video'}`);
+    });
+    
     this.player.play();
+    
+    this.player.on('play', () => {
+      // If video starts playing again after being paused, pause the background music again
+      this.audioService.pause();
+      this.audioResumed = false;
+      this.announcementService.announce(`Playing video: ${this.video?.title || 'Educational video'}`);
+    });
+    
+    this.player.on('pause', () => {
+      // When video is paused, restart the background music
+      this.restartBackgroundMusic();
+      this.announcementService.announce('Video paused. Background music resumed from the beginning.');
+    });
+    
     this.player.on('ended', () => {
       this.videoEnded = true;
+      // Restart background music when video ends
+      this.restartBackgroundMusic();
+      this.announcementService.announce('Video ended. Background music resumed from the beginning.');
     });
   }
 
   protected restartVideo() {
     this.videoEnded = false;
+    // Make sure background music is paused when restarting video
+    this.audioService.pause();
+    this.audioResumed = false;
+    this.announcementService.announce('Restarting video. Background music paused.');
     this.player?.play();
   }
 
   protected goToPedagogicalConcept() {
     this.videoEnded = false;
+    // Make sure background music is paused when watching pedagogical concept
+    this.audioService.pause();
+    this.audioResumed = false;
+    this.announcementService.announce('Switching to pedagogical concept video. Background music paused.');
     this.player?.play();
   }
 }
