@@ -27,6 +27,7 @@ export class AnnouncementService implements OnDestroy {
     // Force browser to pause before adding new announcement
     setTimeout(() => {
       this.liveElement.textContent = message;
+      console.log(message);
     }, 100);
   }
   

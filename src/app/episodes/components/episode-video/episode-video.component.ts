@@ -7,13 +7,11 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faArrowRotateLeft
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import Player from '@vimeo/player';
-import { mergeMap, tap } from 'rxjs';
+import { mergeMap, Subscription, tap } from 'rxjs';
 import { Episode, Video } from '../../models';
 import { AnnouncementService } from '../../services/announcement.service';
 import { AudioService } from '../../services/audio.service';
@@ -27,12 +25,15 @@ import { EpisodeService } from '../../services/episode.service';
 export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   private readonly episodeService = inject(EpisodeService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly audioService = inject(AudioService);
   private readonly announcementService = inject(AnnouncementService);
   private player?: Player;
+  private subscription?: Subscription;
 
   protected episode?: Episode;
   protected video?: Video;
+  protected isClueVideo = false;
   protected videoEnded = false;
   protected faArrowRotateLeft = faArrowRotateLeft;
 
@@ -52,19 +53,26 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.audioService.pause();
-    this.announcementService.announce(
-      'Background music paused. Video will start playing.',
-    );
+    this.setupSubscriptions();
+  }
 
-    this.episodeService.episode$
+  ngOnDestroy() {
+    this.player?.destroy();
+    this.subscription?.unsubscribe();
+  }
+
+  private setupSubscriptions() {
+    this.subscription = this.episodeService.episode$
       .pipe(
         tap((episode?: Episode) => {
           this.episode = episode;
         }),
         mergeMap(() => this.route.queryParams),
         tap((params) => {
+          this.videoEnded = false;
+
           const videoType = params['videoType'];
+          this.isClueVideo = videoType === 'clue';
           switch (videoType) {
             case 'pedagogicalConcept':
               this.video = this.episode?.pedagogicalConcept;
@@ -83,82 +91,101 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
               this.video = this.episode?.investigation;
               break;
           }
+
+          this.audioService.pause();
+          this.announcementService.announce(
+            'Musique de fond mise en pause. Nouvelle vidéo en cours de lecture.',
+          );
         }),
       )
       .subscribe(() => {
+        if (this.player) {
+          this.destroyPlayer();
+        }
         this.initializePlayer();
       });
   }
 
-  ngOnDestroy() {
-    this.player?.destroy();
-  }
-
-  /**
-   * Helper method to restart background music from the beginning
-   */
-  private restartBackgroundMusic(): void {
-    this.audioService.play(true); // true = restart from beginning
-    this.announcementService.announce(
-      'Background music resumed from the beginning.',
-    );
+  protected restartBackgroundMusic(): void {
+    this.audioService.play(true);
+    this.announcementService.announce('Reprise de la musique de fond.');
   }
 
   private initializePlayer() {
     if (!this.video) {
       return;
     }
+
+    const videoTitle = this.video?.title || '';
+
+    this.audioService.pause();
+
     this.player = new Player(this.playerContainer.nativeElement, {
       url: this.video?.url,
       responsive: true,
     });
 
-    // Add player event handlers
     this.player.on('loaded', () => {
-      // Set ARIA label for the iframe for better accessibility
       const iframe = this.playerContainer.nativeElement.querySelector('iframe');
       if (iframe) {
-        iframe.setAttribute(
-          'aria-label',
-          `Video: ${this.video?.title || 'Educational video'}`,
-        );
-        iframe.setAttribute('title', this.video?.title || 'Educational video');
+        iframe.setAttribute('title', videoTitle);
+        iframe.setAttribute('aria-label', `Vidéo: ${videoTitle}`);
+        iframe.focus();
       }
 
-      this.announcementService.announce(
-        `Video loaded: ${this.video?.title || 'Educational video'}`,
-      );
+      this.announcementService.announce(`Vidéo chargée: ${videoTitle}`);
     });
 
     this.player.play();
 
     this.player.on('play', () => {
-      // If video starts playing again after being paused, pause the background music again
       this.audioService.pause();
-      this.announcementService.announce(
-        `Playing video: ${this.video?.title || 'Educational video'}`,
-      );
+      this.announcementService.announce(`Lecture de la vidéo: ${videoTitle}`);
     });
 
     this.player.on('pause', () => {
-      this.announcementService.announce('Video paused');
+      this.announcementService.announce('Vidéo mise en pause');
     });
 
     this.player.on('ended', () => {
+      this.onVideoEnded();
+    });
+  }
+
+  private onVideoEnded() {
+    if (!this.isClueVideo) {
       this.videoEnded = true;
-      // Restart background music when video ends
+      this.destroyPlayer();
+
       this.restartBackgroundMusic();
       this.announcementService.announce(
-        'Video ended. Background music resumed from the beginning.',
+        'Vidéo terminée. Reprise de la musique de fond.',
       );
-    });
+
+      setTimeout(() => {
+        const firstButton = document.getElementById(
+          'episode-video__go-to-quiz-btn',
+        );
+        if (firstButton) {
+          firstButton.focus();
+        }
+      }, 100);
+    } else {
+      this.router.navigate(['../quiz'], { relativeTo: this.route });
+    }
+  }
+
+  private destroyPlayer() {
+    this.player?.destroy();
+    this.player = undefined;
   }
 
   protected restartVideo() {
     this.videoEnded = false;
+    this.initializePlayer();
     this.audioService.pause();
     this.announcementService.announce(
-      'Restarting video. Background music paused.',
+      'Redémarrage de la vidéo. Musique de fond mise en pause.',
     );
     this.player?.play();
   }
@@ -167,7 +194,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
     this.videoEnded = false;
     this.audioService.pause();
     this.announcementService.announce(
-      'Switching to pedagogical concept video. Background music paused.',
+      'Changement vers la vidéo du concept pédagogique. Musique de fond mise en pause.',
     );
     this.player?.play();
   }
