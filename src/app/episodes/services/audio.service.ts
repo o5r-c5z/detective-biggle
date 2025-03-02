@@ -114,7 +114,7 @@ export class AudioService implements OnDestroy {
     if (!this.audio) {
       return;
     }
-    
+
     const newVolume = Math.min(Math.max(volume, 0), 1);
     this.audio.volume = newVolume;
     this._volume.next(newVolume);
@@ -126,6 +126,26 @@ export class AudioService implements OnDestroy {
 
   isPlaying(): boolean {
     return this._isPlaying.value;
+  }
+
+  mute(): void {
+    if (!this.audio) {
+      return;
+    }
+
+    this.audio.muted = true;
+  }
+
+  unmute(): void {
+    if (!this.audio) {
+      return;
+    }
+
+    this.audio.muted = false;
+  }
+
+  isMuted(): boolean {
+    return this.audio?.muted ?? false;
   }
 
   ngOnDestroy(): void {

@@ -32,11 +32,11 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   private player?: Player;
   private subscription?: Subscription;
 
-  protected VideoType = VideoType;
   protected episode?: Episode;
   protected video?: Video;
   protected videoType?: VideoType;
   protected videoEnded = false;
+  protected VideoType = VideoType;
   protected faArrowRotateLeft = faArrowRotateLeft;
 
   @ViewChild('playerContainer') playerContainer!: ElementRef;

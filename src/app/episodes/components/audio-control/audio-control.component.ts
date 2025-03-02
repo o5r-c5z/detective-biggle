@@ -35,6 +35,10 @@ export class AudioControlComponent implements OnInit, OnDestroy {
     return this.audioService.isPlaying();
   }
 
+  get isMuted() {
+    return this.audioService.isMuted();
+  }
+
   @HostBinding('attr.aria-label')
   get ariaLabel() {
     return 'Contrôle de la musique de fond';
@@ -81,7 +85,11 @@ export class AudioControlComponent implements OnInit, OnDestroy {
   }
 
   protected toggleAudio(): void {
-    this.audioService.toggle();
+    if (this.isMuted) {
+      this.audioService.unmute();
+    } else {
+      this.audioService.mute();
+    }
     this.showKeyboardHint = true;
     setTimeout(() => {
       this.showKeyboardHint = false;

@@ -28,15 +28,12 @@ export class EpisodeComponent implements OnInit, OnDestroy {
   protected episode?: Episode;
 
   ngOnInit() {
-    // Initialize background music
     this.audioService.initBackgroundMusic(
       '/audio/Dark Comedy Ident - Main.mp3',
     );
 
-    // Start playing music initially
     this.audioService.play();
 
-    // Monitor route changes to control audio playback between screens
     this.subscriptions.add(
       this.router.events
         .pipe(filter((event) => event instanceof NavigationEnd))
@@ -45,17 +42,13 @@ export class EpisodeComponent implements OnInit, OnDestroy {
           const isVideoScreen = url.includes('/video');
 
           if (!isVideoScreen) {
-            // When navigating between non-video screens,
-            // ensure audio is playing but don't restart
             if (!this.audioService.isPlaying()) {
-              this.audioService.play(false); // Continue from where it left off
+              this.audioService.play(false);
             }
           }
-          // Audio behavior for video screens is now handled entirely by the video component
         }),
     );
 
-    // Subscribe to episode params
     this.subscriptions.add(
       this.route.params.subscribe((params) => {
         const episodeNumber = params['episodeNumber'];
@@ -67,10 +60,7 @@ export class EpisodeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Clean up subscriptions
     this.subscriptions.unsubscribe();
-
-    // Pause audio when leaving the episode component completely
     this.audioService.pause();
   }
 
@@ -81,6 +71,6 @@ export class EpisodeComponent implements OnInit, OnDestroy {
         this.episode = episodeData;
         this.episodeService.setEpisode(episodeData);
       })
-      .catch((error) => this.router.navigate(['/']));
+      .catch(() => this.router.navigate(['/']));
   }
 }

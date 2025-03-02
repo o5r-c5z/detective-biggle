@@ -5,17 +5,17 @@
       ? 'Mettre en pause la musique de fond'
       : 'Jouer la musique de fond'
   "
-  [attr.aria-pressed]="isPlaying ? 'true' : 'false'"
+  [attr.aria-pressed]="isMuted ? 'true' : 'false'"
   (click)="toggleAudio()"
 >
-  @if (isPlaying) {
-    <fa-icon [icon]="faVolumeHigh"></fa-icon>
-  } @else {
+  @if (isMuted) {
     <fa-icon [icon]="faVolumeXmark"></fa-icon>
+  } @else {
+    <fa-icon [icon]="faVolumeHigh"></fa-icon>
   }
 </button>
 @if (showKeyboardHint) {
   <span class="audio-control__keyboard-hint">
-    Raccourci clavier: 'M' pour mettre en pause / reprendre
+    Raccourci clavier: 'M' pour activer/désactiver le son
   </span>
 }
