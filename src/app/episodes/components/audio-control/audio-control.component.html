@@ -7,20 +7,21 @@
   <button
     (click)="toggleAudio()"
     [attr.aria-label]="
-      (isPlaying$ | async) ? 'Pause background music' : 'Play background music'
+      (isPlaying$ | async)
+        ? 'Mettre en pause la musique de fond'
+        : 'Jouer la musique de fond'
     "
     [attr.aria-pressed]="(isPlaying$ | async) ? 'true' : 'false'"
   >
-    <span class="icon" aria-hidden="true">
-      <span *ngIf="isPlaying$ | async" class="pause-icon">
-        <fa-icon [icon]="faVolumeXmark"></fa-icon>
-      </span>
-      <span *ngIf="!(isPlaying$ | async)" class="play-icon">
-        <fa-icon [icon]="faVolumeHigh"></fa-icon>
-      </span>
-    </span>
+    @if (isPlaying$ | async) {
+      <fa-icon [icon]="faVolumeHigh"></fa-icon>
+    } @else {
+      <fa-icon [icon]="faVolumeXmark"></fa-icon>
+    }
   </button>
-  <span class="keyboard-hint" *ngIf="showKeyboardHint">
-    Keyboard shortcuts: 'M' to mute/unmute, 'Up/Down arrows' to change volume
-  </span>
+  @if (showKeyboardHint) {
+    <span class="keyboard-hint">
+      Raccourci clavier: 'M' pour mettre en pause/reprendre
+    </span>
+  }
 </div>
