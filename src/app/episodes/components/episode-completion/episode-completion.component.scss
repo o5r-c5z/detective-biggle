@@ -1,0 +1,39 @@
+@import "../../../../styles/figma-functions";
+
+:host {
+  --episode-quiz__question-correction-height: calc(
+    var(--default-line-height) * 1em
+  );
+  --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
+  --episode-quiz__answer-label-border-width: 2px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacer);
+  padding: 0 10%;
+
+  &::after {
+    background-color: rgba(
+      31,
+      31,
+      31,
+      var(--screen-background-overlay-opacity)
+    );
+  }
+}
+
+h2,
+p {
+  margin: 0;
+  font-size: figma-font-size-to-rem(90);
+  font-weight: bold;
+}
+
+.btn {
+  margin-top: calc(var(--spacer) * 1.5);
+  border-radius: figma-radius-to-rem(50);
+  padding: 2.5rem;
+  font-size: figma-font-size-to-rem(32);
+}

@@ -12,10 +12,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import Player from '@vimeo/player';
 import { mergeMap, Subscription, tap } from 'rxjs';
-import { Episode, Video } from '../../models';
+import { Episode, Video, VideoType } from '../../models';
 import { AnnouncementService } from '../../services/announcement.service';
 import { AudioService } from '../../services/audio.service';
 import { EpisodeService } from '../../services/episode.service';
+
 @Component({
   selector: 'app-episode-video',
   imports: [RouterLink, FontAwesomeModule],
@@ -31,9 +32,10 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   private player?: Player;
   private subscription?: Subscription;
 
+  protected VideoType = VideoType;
   protected episode?: Episode;
   protected video?: Video;
-  protected isClueVideo = false;
+  protected videoType?: VideoType;
   protected videoEnded = false;
   protected faArrowRotateLeft = faArrowRotateLeft;
 
@@ -71,22 +73,21 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
         tap((params) => {
           this.videoEnded = false;
 
-          const videoType = params['videoType'];
-          this.isClueVideo = videoType === 'clue';
-          switch (videoType) {
-            case 'pedagogicalConcept':
+          this.videoType = params['videoType'];
+          switch (this.videoType) {
+            case VideoType.PedagogicalConcept:
               this.video = this.episode?.pedagogicalConcept;
               break;
-            case 'clue':
+            case VideoType.Clue:
               const clueNumber = params['clue'];
               if (clueNumber) {
                 this.video = this.episode?.clues[clueNumber];
               }
               break;
-            case 'resolution':
+            case VideoType.Resolution:
               this.video = this.episode?.resolution;
               break;
-            case 'investigation':
+            case VideoType.Investigation:
             default:
               this.video = this.episode?.investigation;
               break;
@@ -153,25 +154,30 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   }
 
   private onVideoEnded() {
-    if (!this.isClueVideo) {
-      this.videoEnded = true;
-      this.destroyPlayer();
+    switch (this.videoType) {
+      case VideoType.Clue:
+        this.router.navigate(['../quiz'], { relativeTo: this.route });
+        break;
+      case VideoType.Resolution:
+        this.router.navigate(['../completion'], { relativeTo: this.route });
+        break;
+      default:
+        this.videoEnded = true;
+        this.destroyPlayer();
 
-      this.restartBackgroundMusic();
-      this.announcementService.announce(
-        'Vidéo terminée. Reprise de la musique de fond.',
-      );
-
-      setTimeout(() => {
-        const firstButton = document.getElementById(
-          'episode-video__go-to-quiz-btn',
+        this.restartBackgroundMusic();
+        this.announcementService.announce(
+          'Vidéo terminée. Reprise de la musique de fond.',
         );
-        if (firstButton) {
-          firstButton.focus();
-        }
-      }, 100);
-    } else {
-      this.router.navigate(['../quiz'], { relativeTo: this.route });
+
+        setTimeout(() => {
+          const firstButton = document.getElementById(
+            'episode-video__go-to-quiz-btn',
+          );
+          if (firstButton) {
+            firstButton.focus();
+          }
+        }, 100);
     }
   }
 

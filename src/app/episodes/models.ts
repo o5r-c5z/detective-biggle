@@ -18,3 +18,10 @@ export interface QuizQuestion {
   answers: string[];
   correctAnswer: number;
 }
+
+export enum VideoType {
+  Investigation = 'investigation',
+  PedagogicalConcept = 'pedagogicalConcept',
+  Clue = 'clue',
+  Resolution = 'resolution',
+}

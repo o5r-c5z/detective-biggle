@@ -1,5 +1,5 @@
 import { Component, HostBinding, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
 
@@ -11,6 +11,8 @@ import { EpisodeService } from '../../services/episode.service';
 })
 export class EpisodeQuizComponent implements OnInit {
   private readonly episodeService = inject(EpisodeService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   protected episode?: Episode;
   protected quizStep?: number;
@@ -18,14 +20,12 @@ export class EpisodeQuizComponent implements OnInit {
   @HostBinding('class.screen')
   @HostBinding('style.--screen-background')
   get backgroundImage() {
-    return !this.isQuizComplete()
-      ? `url("/images/Ecran_UI.jpg")`
-      : `url("/images/Table_enquete_UI.jpg")`;
+    return `url("/images/Ecran_UI.jpg")`;
   }
 
   @HostBinding('style.--screen-background-overlay-opacity')
   get backgroundOverlayOpacity() {
-    return !this.isQuizComplete() ? 0.8 : 0.9;
+    return 0.8;
   }
 
   ngOnInit() {
@@ -35,10 +35,6 @@ export class EpisodeQuizComponent implements OnInit {
     this.episodeService.quizStep$.subscribe((quizStep: number) => {
       this.quizStep = quizStep;
     });
-  }
-
-  protected isQuizComplete() {
-    return this.episodeService.isQuizComplete();
   }
 
   protected onAnswerSelected(
@@ -51,17 +47,26 @@ export class EpisodeQuizComponent implements OnInit {
     const correction = correctionId
       ? document.getElementById(correctionId)
       : null;
-    correction?.classList.add('active');
-    if (
+    const isCorrect =
       selectedAnswerIndex ===
-      this.episode?.questions[questionIndex].correctAnswer
-    ) {
+      this.episode?.questions[questionIndex].correctAnswer;
+
+    correction?.classList.add('active');
+
+    if (isCorrect) {
       const fieldset = input.closest('fieldset');
       if (fieldset) {
         fieldset.disabled = true;
       }
       setTimeout(() => {
         this.episodeService.incrementQuizStep();
+
+        if (this.episodeService.isQuizComplete()) {
+          this.router.navigate(['../video'], {
+            queryParams: { videoType: 'resolution' },
+            relativeTo: this.route,
+          });
+        }
       }, 2000);
     } else {
       setTimeout(() => {
@@ -70,9 +75,5 @@ export class EpisodeQuizComponent implements OnInit {
         }
       }, 2000);
     }
-  }
-
-  protected onResetQuiz() {
-    this.episodeService.resetQuiz();
   }
 }

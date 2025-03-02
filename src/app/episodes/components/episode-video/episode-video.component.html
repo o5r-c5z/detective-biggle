@@ -4,18 +4,20 @@
   aria-label="Lecteur vidéo"
 ></div>
 @if (!videoEnded) {
-  <a
-    class="btn btn-plain"
-    (click)="restartBackgroundMusic()"
-    [routerLink]="['../quiz']"
-    aria-label="Quitter la vidéo et lancer le quiz"
-  >
-    @if (isClueVideo) {
-      Retourner au quiz
-    } @else {
-      Quitter la vidéo et lancer le quiz
-    }
-  </a>
+  @if (videoType !== VideoType.Resolution) {
+    <a
+      class="btn btn-plain"
+      (click)="restartBackgroundMusic()"
+      [routerLink]="['../quiz']"
+      aria-label="Quitter la vidéo et lancer le quiz"
+    >
+      @if (videoType === VideoType.Clue) {
+        Retourner au quiz
+      } @else {
+        Quitter la vidéo et lancer le quiz
+      }
+    </a>
+  }
 } @else {
   <nav class="episode-video__nav" aria-label="Options après la vidéo">
     <a
