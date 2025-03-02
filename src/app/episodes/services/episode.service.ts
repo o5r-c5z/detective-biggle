@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Episode } from '../models';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class EpisodeService {
   private readonly episodeSubject = new BehaviorSubject<Episode | undefined>(
-    undefined
+    undefined,
   );
   private readonly quizStepSubject = new BehaviorSubject<number>(0);
 

@@ -1,14 +1,51 @@
-<div #playerContainer id="player-container" [class.active]="!videoEnded"></div>
-
-@if (videoEnded) {
-  <nav class="episode-video__nav">
-    <a id="go-to-quiz-button" class="button" [routerLink]="['../quiz']">
+<div
+  #playerContainer
+  id="episode-video__player-container"
+  aria-label="Lecteur vidéo"
+></div>
+@if (!videoEnded) {
+  @if (videoType !== VideoType.Resolution) {
+    <a
+      class="btn btn-plain"
+      (click)="restartBackgroundMusic()"
+      [routerLink]="['../quiz']"
+      aria-label="Quitter la vidéo et lancer le quiz"
+    >
+      @if (videoType === VideoType.Clue) {
+        Retourner au quiz
+      } @else {
+        Quitter la vidéo et lancer le quiz
+      }
+    </a>
+  }
+} @else {
+  <nav class="episode-video__nav" aria-label="Options après la vidéo">
+    <a
+      id="episode-video__go-to-quiz-btn"
+      class="btn btn-plain"
+      [routerLink]="['../quiz']"
+      aria-label="Lancer le quiz"
+      tabindex="0"
+    >
       Lancer le quiz !
     </a>
-    <a class="go-back-button button" (click)="restartVideo()">
+    <a
+      class="btn btn-plain"
+      (click)="restartVideo()"
+      aria-label="Revoir toute la vidéo"
+      tabindex="0"
+    >
+      <fa-icon [icon]="faArrowRotateLeft" aria-hidden="true"></fa-icon>
       Revoir toute la vidéo
     </a>
-    <a class="go-back-button button" (click)="goToPedagogicalConcept()">
+    <a
+      class="btn btn-plain"
+      [routerLink]="['../video']"
+      [queryParams]="{ videoType: 'pedagogicalConcept' }"
+      aria-label="Revoir le concept pédagogique"
+      tabindex="0"
+    >
+      <fa-icon [icon]="faArrowRotateLeft" aria-hidden="true"></fa-icon>
       Revoir le concept pédagogique
     </a>
   </nav>

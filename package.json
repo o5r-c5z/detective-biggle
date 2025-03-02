@@ -19,6 +19,8 @@
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
+    "@fortawesome/angular-fontawesome": "^1.0.0",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@vimeo/player": "^2.25.1",
     "@vimeo/vimeo": "^3.0.3",
     "normalize.css": "^8.0.1",

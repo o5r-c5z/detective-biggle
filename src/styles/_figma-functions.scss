@@ -3,5 +3,5 @@
 }
 
 @function figma-font-size-to-rem($number) {
-  @return #{$number / 28.125}rem;
+  @return #{$number / 22}rem;
 }

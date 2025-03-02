@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: var(--spacer);
+  right: var(--spacer);
+  transition: all 0.3s ease;
+
+  &:hover .audio-control__keyboard-hint {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.audio-control__button {
+  border-radius: 50%;
+}
+
+.audio-control__keyboard-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  margin-right: calc(var(--button-min-width));
+  height: calc(var(--button-min-height) / 2);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}

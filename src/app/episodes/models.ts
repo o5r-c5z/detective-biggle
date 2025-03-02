@@ -4,6 +4,7 @@ export interface Episode {
   investigation: Video;
   pedagogicalConcept: Video;
   clues: Video[];
+  resolution: Video;
   questions: QuizQuestion[];
 }
 
@@ -16,4 +17,11 @@ export interface QuizQuestion {
   label: string;
   answers: string[];
   correctAnswer: number;
+}
+
+export enum VideoType {
+  Investigation = 'investigation',
+  PedagogicalConcept = 'pedagogicalConcept',
+  Clue = 'clue',
+  Resolution = 'resolution',
 }
