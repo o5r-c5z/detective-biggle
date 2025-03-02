@@ -5,17 +5,17 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
 import { Episode } from '../../models';
-import { EpisodeService } from '../../services/episode.service';
 import { AudioService } from '../../services/audio.service';
+import { EpisodeService } from '../../services/episode.service';
 import { AudioControlComponent } from '../audio-control/audio-control.component';
-import { Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-episode',
   imports: [RouterOutlet, AudioControlComponent],
   templateUrl: './episode.component.html',
-  providers: [EpisodeService],
+  providers: [],
   styleUrl: './episode.component.scss',
 })
 export class EpisodeComponent implements OnInit, OnDestroy {

@@ -1,28 +1,21 @@
-<div
-  class="audio-control"
-  [class.playing]="isPlaying$ | async"
-  role="group"
-  aria-label="Contrôle de la musique de fond"
+<button
+  class="btn audio-control__button"
+  [attr.aria-label]="
+    isPlaying
+      ? 'Mettre en pause la musique de fond'
+      : 'Jouer la musique de fond'
+  "
+  [attr.aria-pressed]="isPlaying ? 'true' : 'false'"
+  (click)="toggleAudio()"
 >
-  <button
-    class="btn audio-control__button"
-    [attr.aria-label]="
-      (isPlaying$ | async)
-        ? 'Mettre en pause la musique de fond'
-        : 'Jouer la musique de fond'
-    "
-    [attr.aria-pressed]="(isPlaying$ | async) ? 'true' : 'false'"
-    (click)="toggleAudio()"
-  >
-    @if (isPlaying$ | async) {
-      <fa-icon [icon]="faVolumeHigh"></fa-icon>
-    } @else {
-      <fa-icon [icon]="faVolumeXmark"></fa-icon>
-    }
-  </button>
-  @if (showKeyboardHint) {
-    <span class="audio-control__keyboard-hint">
-      Raccourci clavier: 'M' pour mettre en pause/reprendre
-    </span>
+  @if (isPlaying) {
+    <fa-icon [icon]="faVolumeHigh"></fa-icon>
+  } @else {
+    <fa-icon [icon]="faVolumeXmark"></fa-icon>
   }
-</div>
+</button>
+@if (showKeyboardHint) {
+  <span class="audio-control__keyboard-hint">
+    Raccourci clavier: 'M' pour mettre en pause / reprendre
+  </span>
+}
