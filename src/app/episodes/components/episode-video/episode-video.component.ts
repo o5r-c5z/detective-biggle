@@ -8,16 +8,19 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faArrowRotateLeft
+} from '@fortawesome/free-solid-svg-icons';
 import Player from '@vimeo/player';
 import { mergeMap, tap } from 'rxjs';
 import { Episode, Video } from '../../models';
-import { EpisodeService } from '../../services/episode.service';
-import { AudioService } from '../../services/audio.service';
 import { AnnouncementService } from '../../services/announcement.service';
-
+import { AudioService } from '../../services/audio.service';
+import { EpisodeService } from '../../services/episode.service';
 @Component({
   selector: 'app-episode-video',
-  imports: [RouterLink],
+  imports: [RouterLink, FontAwesomeModule],
   templateUrl: './episode-video.component.html',
   styleUrl: './episode-video.component.scss',
 })
@@ -31,6 +34,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   protected episode?: Episode;
   protected video?: Video;
   protected videoEnded = false;
+  protected faArrowRotateLeft = faArrowRotateLeft;
 
   @ViewChild('playerContainer') playerContainer!: ElementRef;
 
@@ -137,9 +141,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
     });
 
     this.player.on('pause', () => {
-      this.announcementService.announce(
-        'Video paused',
-      );
+      this.announcementService.announce('Video paused');
     });
 
     this.player.on('ended', () => {

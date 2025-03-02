@@ -55,16 +55,26 @@ body {
   border: 0;
 }
 
-.button {
-  display: block;
-  background-color: var(--ultramarine-blue-color);
+.btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  min-width: 48px;
+  min-height: 48px;
+  background-color: transparent;
   color: var(--default-text-color);
-  box-shadow: 0 3.62px 3.62px 0 var(--shadow-color);
-  padding: 2.5rem 1.25rem;
   font-size: figma-font-size-to-rem(35);
   font-weight: bold;
-  text-align: center;
   text-decoration: none;
+}
+
+.btn-plain {
+  padding: 2.5rem 1.25rem;
+  background-color: var(--ultramarine-blue-color);
+  box-shadow: 0 3.62px 3.62px 0 var(--shadow-color);
 }
 
 .screen {

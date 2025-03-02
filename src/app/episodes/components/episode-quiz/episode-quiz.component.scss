@@ -136,7 +136,7 @@
   gap: var(--gap);
   justify-content: center;
 
-  .button {
+  .btn-plain {
     border-radius: figma-radius-to-rem(30);
     padding: 1.5rem;
     width: 25%;
@@ -174,7 +174,7 @@
     font-weight: bold;
   }
 
-  .button {
+  .btn-plain {
     margin-top: calc(var(--spacer) * 1.5);
     border-radius: figma-radius-to-rem(50);
     padding: 2.5rem;

@@ -59,7 +59,7 @@
         <h2>Bravo !</h2>
         <p>Vous avez réussi l'enquête !</p>
         <p>
-          <a class="button" [routerLink]="['../']" (click)="onResetQuiz()">
+          <a class="btn btn-plain" [routerLink]="['../']" (click)="onResetQuiz()">
             Retourner au début de l'épisode
           </a>
         </p>
@@ -71,7 +71,7 @@
     <nav class="episode-quiz__clues">
       @for (clue of episode.clues; track clue; let cIndex = $index) {
         <a
-          class="button"
+          class="btn btn-plain"
           [routerLink]="['../video']"
           [queryParams]="{ videoType: 'clue', clue: cIndex }"
         >

@@ -16,55 +16,11 @@
   }
 }
 
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 8px;
-  color: white;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-
-  &:focus {
-    outline: 2px solid white;
-    border-radius: 50%;
-  }
+.audio-control__button {
+  border-radius: 50%;
 }
 
-.volume-control {
-  display: flex;
-  flex-direction: column;
-}
-
-.icon {
-  font-size: 1.2rem;
-}
-
-input[type=range] {
-  width: 80px;
-
-  &:focus {
-    outline: 2px solid white;
-  }
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.keyboard-hint {
+.audio-control__keyboard-hint {
   position: absolute;
   top: -40px;
   right: 0;
@@ -77,4 +33,4 @@ input[type=range] {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
-} 
+}

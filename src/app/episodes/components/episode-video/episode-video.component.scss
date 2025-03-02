@@ -36,11 +36,15 @@
   width: 100%;
 }
 
-#go-to-quiz-button {
+#go-to-quiz-btn {
   padding: 3rem 1.25rem;
 }
 
-.button {
+.btn {
   border-radius: figma-radius-to-rem(40);
   padding: 2rem 1.25rem;
+
+  fa-icon {
+    margin-right: 1rem;
+  }
 }
