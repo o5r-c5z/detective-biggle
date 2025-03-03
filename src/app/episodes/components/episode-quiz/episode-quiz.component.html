@@ -14,6 +14,8 @@
             id="question-{{ qIndex }}-answer-{{ aIndex }}"
             type="radio"
             name="question-{{ qIndex }}"
+            [attr.data-question-index]="qIndex"
+            [attr.data-answer-index]="aIndex"
             value="{{ aIndex }}"
             class="episode-quiz__answer-input"
             [class.correct]="aIndex === question.correctAnswer"
@@ -21,7 +23,6 @@
             [attr.aria-describedby]="
               'question-' + qIndex + '-answer-' + aIndex + '-correction'
             "
-            (change)="onAnswerSelected($event, qIndex, aIndex)"
           />
           <label
             for="question-{{ qIndex }}-answer-{{ aIndex }}"
@@ -43,6 +44,13 @@
             </span>
           </p>
         }
+        <button
+          type="button"
+          class="episode-quiz__validate-answer-btn btn btn-plain"
+          (click)="onValidateAnswer($event)"
+        >
+          Valider ma réponse
+        </button>
       </fieldset>
     }
   </form>

@@ -51,7 +51,6 @@
 
   &:focus-visible {
     & + .episode-quiz__answer-label {
-      border-color: var(--ultramarine-blue-color);
       outline: 3px solid var(--ultramarine-blue-color);
       outline-offset: 0;
     }
@@ -68,14 +67,14 @@
   width: 100%;
   background-color: var(--beige-color);
   color: #2b262d;
-  font-size: figma-font-size-to-rem(45);
+  font-size: figma-font-size-to-rem(35);
   font-weight: 600;
   text-align: center;
 
   .episode-quiz__step {
     display: block;
     margin-bottom: var(--spacer);
-    font-size: figma-font-size-to-rem(35);
+    font-size: 0.75em;
     font-weight: 500;
   }
 }
@@ -108,6 +107,15 @@
   }
 
   .episode-quiz__answer-input:checked + & {
+    border-color: var(--black-color);
+
+    &::before {
+      background-color: var(--black-color);
+      box-shadow: 0 0 0 1px var(--black-color);
+    }
+  }
+
+  .episode-quiz__answer-input.active:checked + & {
     --background-color: var(--light-danger-color);
     border-color: var(--danger-color);
 
@@ -118,7 +126,7 @@
     }
   }
 
-  .episode-quiz__answer-input.correct:checked + & {
+  .episode-quiz__answer-input.active.correct:checked + & {
     --background-color: var(--light-success-color);
     border-color: var(--success-color);
 
@@ -152,20 +160,31 @@
   }
 }
 
+.episode-quiz__validate-answer-btn {
+  border-radius: figma-radius-to-rem(30);
+  padding: 1rem;
+  width: 100%;
+  background-color: var(--ultramarine-blue-color);
+}
+
 .episode-quiz__clues {
   --gap: var(--spacer);
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: var(--gap);
+  justify-content: center;
+  margin-top: calc(
+    var(--spacer) + var(--episode-quiz__question-correction-height)
+  );
 
-  .btn-plain {
+  .btn {
     border-radius: figma-radius-to-rem(30);
-    padding: 1.5rem;
+    padding: 1rem;
     color: var(--text-color);
+    font-size: figma-font-size-to-rem(25);
 
     @media screen and (orientation: landscape) {
-      width: 25%;
+      width: calc(25% - var(--gap) * 3 / 4);
     }
 
     @media screen and (orientation: portrait) {

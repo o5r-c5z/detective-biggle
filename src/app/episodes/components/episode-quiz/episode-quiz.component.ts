@@ -42,12 +42,30 @@ export class EpisodeQuizComponent implements OnInit {
     });
   }
 
-  protected onAnswerSelected(
-    $event: Event,
-    questionIndex: number,
-    selectedAnswerIndex: number,
-  ) {
-    const input = $event.target as HTMLInputElement;
+  protected onValidateAnswer($event: Event) {
+    const button = $event.target as HTMLButtonElement;
+    const fieldset = button.closest('fieldset');
+    const selectedRadio = fieldset?.querySelector(
+      'input:checked',
+    ) as HTMLInputElement | null;
+    if (!selectedRadio) {
+      return;
+    }
+    this.validateAnswer(selectedRadio);
+  }
+
+  private validateAnswer(input: HTMLInputElement) {
+    const questionIndex = parseInt(
+      input.getAttribute('data-question-index') ?? '-1',
+    );
+    const selectedAnswerIndex = parseInt(
+      input.getAttribute('data-answer-index') ?? '-1',
+    );
+
+    if (questionIndex === -1 || selectedAnswerIndex === -1) {
+      return;
+    }
+
     const correctionId = input.getAttribute('aria-describedby');
     const correction = correctionId
       ? document.getElementById(correctionId)
@@ -56,6 +74,7 @@ export class EpisodeQuizComponent implements OnInit {
       selectedAnswerIndex ===
       this.episode?.questions[questionIndex].correctAnswer;
 
+    input.classList.add('active');
     correction?.classList.add('active');
 
     if (isCorrect) {
