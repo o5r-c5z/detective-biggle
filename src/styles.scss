@@ -21,6 +21,8 @@ html {
   --default-text-color: var(--white-color);
 
   --screen-ratio: 16 / 9;
+  --screen-landscape-max-width: calc(100vh * calc(var(--screen-ratio)));
+  --screen-landscape-width: min(100%, var(--screen-landscape-max-width));
 
   --default-line-height: 1.15;
   --spacer: 1rem;
@@ -31,6 +33,7 @@ html {
   color: var(--default-text-color);
   line-height: var(--default-line-height);
   box-sizing: border-box;
+  
   @media screen and (orientation: landscape) {
     font-size: 1.15vw;
   }
