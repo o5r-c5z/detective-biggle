@@ -1,18 +1,28 @@
-import { Component, HostBinding, inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostBinding,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { mergeMap, tap } from 'rxjs/operators';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
-
 @Component({
   selector: 'app-episode-quiz',
   imports: [RouterLink],
   templateUrl: './episode-quiz.component.html',
   styleUrl: './episode-quiz.component.scss',
 })
-export class EpisodeQuizComponent implements OnInit {
+export class EpisodeQuizComponent implements AfterViewInit {
   private readonly episodeService = inject(EpisodeService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+
+  @ViewChild('form')
+  protected form!: ElementRef<HTMLFormElement>;
 
   protected episode?: Episode;
   protected quizStep?: number;
@@ -33,12 +43,40 @@ export class EpisodeQuizComponent implements OnInit {
     return 0.8;
   }
 
-  ngOnInit() {
-    this.episodeService.episode$.subscribe((episode?: Episode) => {
-      this.episode = episode;
-    });
-    this.episodeService.quizStep$.subscribe((quizStep: number) => {
-      this.quizStep = quizStep;
+  ngAfterViewInit() {
+    this.episodeService.episode$
+      .pipe(
+        tap((episode?: Episode) => {
+          this.episode = episode;
+        }),
+        mergeMap(() => this.episodeService.quizStep$),
+      )
+      .subscribe((quizStep: number) => {
+        this.quizStep = quizStep;
+
+        if (!this.episode || this.quizStep === null) {
+          return;
+        }
+
+        this.focusFirstInput();
+      });
+  }
+
+  private focusFirstInput(): void {
+    setTimeout(() => {
+      const firstRadioInput = this.form.nativeElement.querySelector(
+        'fieldset:not([hidden]) input:first-of-type',
+      ) as HTMLInputElement;
+      
+      if (firstRadioInput) {
+        console.log(firstRadioInput);
+        firstRadioInput.focus();
+        firstRadioInput.classList.add(':focus-visible');
+        const label = firstRadioInput.nextElementSibling as HTMLElement;
+        if (label) {
+          label.classList.add('focus-visible');
+        }
+      }
     });
   }
 
@@ -48,9 +86,11 @@ export class EpisodeQuizComponent implements OnInit {
     const selectedRadio = fieldset?.querySelector(
       'input:checked',
     ) as HTMLInputElement | null;
+
     if (!selectedRadio) {
       return;
     }
+
     this.validateAnswer(selectedRadio);
   }
 

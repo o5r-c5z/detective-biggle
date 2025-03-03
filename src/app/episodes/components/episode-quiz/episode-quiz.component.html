@@ -1,5 +1,5 @@
 @if (episode) {
-  <form aria-label="Quiz">
+  <form #form aria-label="Quiz" (keydown.enter)="onValidateAnswer($event)">
     @for (question of episode.questions; track question; let qIndex = $index) {
       <fieldset class="episode-quiz__question" [hidden]="quizStep !== qIndex">
         <legend class="episode-quiz__question-label">
