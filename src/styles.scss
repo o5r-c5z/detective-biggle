@@ -10,6 +10,7 @@ html {
   --pink-color: #fb80ac;
   --sky-blue-color: #45bcff;
   --ultramarine-blue-color: #3f52ff;
+  --royal-blue-color: #3673ff;
   --white-color: #fff;
   --danger-color: #ff5252;
   --light-danger-color: #ffdcdc;
@@ -39,7 +40,7 @@ html {
   }
 
   @media screen and (orientation: portrait) {
-    font-size: 1.3vh;
+    font-size: 1.2vh;
   }
 }
 
@@ -126,7 +127,7 @@ body {
 }
 
 :focus {
-  border-color: var(--white-color);
+  border-color: var(--white-color) !important;
   outline: 3px solid var(--ultramarine-blue-color);
   outline-offset: 0;
 }
