@@ -6,10 +6,10 @@
 @if (!videoEnded) {
   @if (videoType !== VideoType.Resolution) {
     <a
+      id="episode-video__exit-btn"
       class="btn btn-plain"
       (click)="restartBackgroundMusic()"
       [routerLink]="['../quiz']"
-      aria-label="Quitter la vidéo et lancer le quiz"
     >
       @if (videoType === VideoType.Clue) {
         Retourner au quiz

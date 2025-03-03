@@ -1,7 +1,12 @@
 <h2>Bravo !</h2>
 <p>Vous avez réussi l'enquête !</p>
 <p>
-  <a class="btn btn-plain" [routerLink]="['../']" (click)="resetQuiz()">
+  <a
+    #resetQuizButton
+    class="btn btn-plain"
+    [routerLink]="['../']"
+    (click)="resetQuiz()"
+  >
     Retourner au début de l'épisode
   </a>
 </p>

@@ -1,4 +1,11 @@
-import { Component, HostBinding, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostBinding,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EpisodeService } from '../../services/episode.service';
 
@@ -8,8 +15,11 @@ import { EpisodeService } from '../../services/episode.service';
   templateUrl: './episode-completion.component.html',
   styleUrl: './episode-completion.component.scss',
 })
-export class EpisodeCompletionComponent {
+export class EpisodeCompletionComponent implements AfterViewInit {
   private readonly episodeService = inject(EpisodeService);
+
+  @ViewChild('resetQuizButton')
+  protected resetQuizButton!: ElementRef<HTMLAnchorElement>;
 
   @HostBinding('class.screen')
   @HostBinding('style.--screen-background-landscape')
@@ -25,6 +35,11 @@ export class EpisodeCompletionComponent {
   @HostBinding('style.--screen-background-overlay-opacity')
   get backgroundOverlayOpacity() {
     return 0.9;
+  }
+
+  ngAfterViewInit() {
+    this.resetQuizButton.nativeElement.focus();
+    this.resetQuizButton.nativeElement.classList.add(':focus-visible');
   }
 
   protected resetQuiz() {

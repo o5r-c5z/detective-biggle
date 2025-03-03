@@ -1,7 +1,11 @@
 @if (episode) {
-<h1 class="visually-hidden">{{ episode.title }}</h1>
-<nav class="episode-title-screen__links">
-  <a [routerLink]="['video']" class="btn btn-plain"> Accès à l'épisode </a>
-  <a [routerLink]="['quiz']" class="btn btn-plain"> Accès au quiz de l'épisode </a>
-</nav>
+  <h1 class="visually-hidden">{{ episode.title }}</h1>
+  <nav class="episode-title-screen__links">
+    <a #goToEpisodeButton [routerLink]="['video']" class="btn btn-plain">
+      Accès à l'épisode
+    </a>
+    <a [routerLink]="['quiz']" class="btn btn-plain">
+      Accès au quiz de l'épisode
+    </a>
+  </nav>
 }

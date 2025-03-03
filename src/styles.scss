@@ -126,7 +126,7 @@ body {
   }
 }
 
-:focus {
+:focus-visible {
   border-color: var(--white-color) !important;
   outline: 3px solid var(--ultramarine-blue-color);
   outline-offset: 0;
