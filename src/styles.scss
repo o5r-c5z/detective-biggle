@@ -73,7 +73,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0;
+  border: solid 2px transparent;
   padding: 0;
   min-width: var(--button-min-width);
   min-height: var(--button-min-height);
@@ -123,4 +123,10 @@ body {
     position: absolute;
     inset: 0;
   }
+}
+
+:focus {
+  border-color: var(--white-color);
+  outline: 3px solid var(--ultramarine-blue-color);
+  outline-offset: 0;
 }
