@@ -4,8 +4,15 @@
   --episode-quiz__question-correction-height: calc(
     var(--default-line-height) * 1em
   );
-  --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
   --episode-quiz__answer-label-border-width: 2px;
+
+  @media screen and (orientation: landscape) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
+  }
+
+  @media screen and (orientation: portrait) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
+  }
 
   display: flex;
   flex-direction: column;
@@ -68,19 +75,12 @@
   gap: var(--spacer);
   border: var(--episode-quiz__answer-label-border-width) solid var(--grey-color);
   border-radius: figma-radius-to-rem(30);
+  padding: calc(var(--spacer) * 1.5) var(--episode-quiz__answer-label-padding-x);
   background-color: var(--background-color);
   color: var(--text-color);
   font-size: var(--font-size); 
   text-align: left;
   position: relative;
-
-  @media screen and (orientation: landscape) {
-    padding: calc(var(--spacer) * 1.5) var(--episode-quiz__answer-label-padding-x);
-  }
-
-  @media screen and (orientation: portrait) {
-    padding: var(--spacer);
-  }
 
   &::before {
     content: "";
@@ -88,8 +88,8 @@
     vertical-align: middle;
     border: 2px solid var(--background-color);
     border-radius: 50%;
-    width: var(--font-size);
     height: var(--font-size);
+    aspect-ratio: 1 / 1;
     box-shadow: 0 0 0 1px var(--black-color);
   }
 
