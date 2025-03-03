@@ -17,10 +17,12 @@ html {
   --light-success-color: #ccefdc;
   --text-color: #1f1f1f;
   --shadow-color: rgba(0, 0, 0, 0.25);
-
   --default-background-color: var(--black-color);
-  --default-line-height: 1.15;
   --default-text-color: var(--white-color);
+
+  --screen-ratio: 16 / 9;
+
+  --default-line-height: 1.15;
   --spacer: 1rem;
 
   --button-min-width: 48px;

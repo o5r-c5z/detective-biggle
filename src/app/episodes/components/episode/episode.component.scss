@@ -2,13 +2,13 @@
   display: block;
   position: relative;
   width: 100%;
-  max-width: calc(100vh * 16/9);
+  max-width: calc(100vh * calc(var(--screen-ratio)));
   max-height: 100vh;
   margin: auto;
 
   @media screen and (orientation: landscape) {
     aspect-ratio: 16/9;
-    width: min(100%, calc(100vh * 16/9));
+    width: min(100%, calc(100vh * calc(var(--screen-ratio))));
   }
 
   @media screen and (orientation: portrait) {
