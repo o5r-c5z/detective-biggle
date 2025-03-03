@@ -27,9 +27,15 @@ html {
   --button-min-height: 48px;
 
   color: var(--default-text-color);
-  font-size: 1.15vw;
   line-height: var(--default-line-height);
   box-sizing: border-box;
+  @media screen and (orientation: landscape) {
+    font-size: 1.15vw;
+  }
+
+  @media screen and (orientation: portrait) {
+    font-size: 2vw;
+  }
 }
 
 *,
@@ -84,7 +90,7 @@ body {
   display: block;
   position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
+  height: 100%;
   overflow: hidden;
 
   &::before {
@@ -92,10 +98,17 @@ body {
     z-index: -2;
     position: absolute;
     inset: 0;
-    background-image: var(--screen-background);
-    background-position: center;
+    background-position: center top;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
+
+    @media screen and (orientation: landscape) {
+      background-image: var(--screen-background-landscape);
+    }
+
+    @media screen and (orientation: portrait) {
+      background-image: var(--screen-background-portrait);
+    }
   }
 
   &::after {

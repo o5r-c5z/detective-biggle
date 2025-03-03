@@ -15,9 +15,14 @@ export class EpisodeTitleScreenComponent implements OnInit {
   protected episode?: Episode;
 
   @HostBinding('class.screen')
-  @HostBinding('style.--screen-background')
+  @HostBinding('style.--screen-background-landscape')
   get backgroundImage() {
-    return `url("${this.episode?.titleBackground}")`;
+    return `url("${this.episode?.titleBackground.landscape}")`;
+  }
+
+  @HostBinding('style.--screen-background-portrait')
+  get backgroundImagePortrait() {
+    return `url("${this.episode?.titleBackground.portrait}")`;
   }
 
   ngOnInit() {
