@@ -1,33 +1,32 @@
 @import "../../../../styles/figma-functions";
 
 .episode-title-screen__links {
-  --image-ratio: 851 / 901;
-  @media screen and (orientation: landscape) {
-    --image-width: 45vw;
-    --image-height: calc(1 / calc(var(--image-ratio)) * var(--image-width));
-  }
-
-  @media screen and (orientation: portrait) {
-    --image-width: 103.5vw;
-    --image-height: calc(1 / calc(var(--image-ratio)) * var(--image-width) * 0.675);
-  }
+  --image-ratio: 843 / 846;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: calc(var(--spacer) * 2);
   position: absolute;
-  bottom: 0;
   right: 0;
-  padding-top: calc(var(--spacer) * 10);
-  padding-right: 5vw;
-  padding-left: 8.5vw;
-  width: var(--image-width);
-  height: var(--image-height);
+  bottom: 0;
   background-image: url("/images/Fiche_01_UI_assets 1.png");
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
+  
+  @media screen and (orientation: landscape) {
+    padding: 6rem 2rem 0rem 5rem;
+    width: min(45%, var(--screen-landscape-max-width) * 0.45);
+    aspect-ratio: var(--image-ratio);
+  }
+
+  @media screen and (orientation: portrait) {
+    padding: 5rem 2.5rem 2.5rem;
+    width: 100vw;
+    background-position: right top;
+    background-size: 130%;
+  }
 
   .btn {
     border-radius: figma-radius-to-rem(40);
