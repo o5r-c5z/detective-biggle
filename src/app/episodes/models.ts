@@ -1,6 +1,9 @@
 export interface Episode {
   title: string;
-  titleBackground: string;
+  titleBackground: {
+    landscape: string;
+    portrait: string;
+  };
   investigation: Video;
   pedagogicalConcept: Video;
   clues: Video[];

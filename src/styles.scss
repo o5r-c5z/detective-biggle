@@ -17,19 +17,30 @@ html {
   --light-success-color: #ccefdc;
   --text-color: #1f1f1f;
   --shadow-color: rgba(0, 0, 0, 0.25);
-
   --default-background-color: var(--black-color);
-  --default-line-height: 1.15;
   --default-text-color: var(--white-color);
+
+  --screen-ratio: 16 / 9;
+  --screen-landscape-max-width: calc(100vh * calc(var(--screen-ratio)));
+  --screen-landscape-width: min(100%, var(--screen-landscape-max-width));
+
+  --default-line-height: 1.15;
   --spacer: 1rem;
 
   --button-min-width: 48px;
   --button-min-height: 48px;
 
   color: var(--default-text-color);
-  font-size: 1.15vw;
   line-height: var(--default-line-height);
   box-sizing: border-box;
+  
+  @media screen and (orientation: landscape) {
+    font-size: 1.1vw;
+  }
+
+  @media screen and (orientation: portrait) {
+    font-size: 1.3vh;
+  }
 }
 
 *,
@@ -71,6 +82,7 @@ body {
   cursor: pointer;
   font-size: figma-font-size-to-rem(35);
   font-weight: bold;
+  text-align: center;
   text-decoration: none;
 }
 
@@ -84,7 +96,7 @@ body {
   display: block;
   position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
+  height: 100%;
   overflow: hidden;
 
   &::before {
@@ -92,10 +104,17 @@ body {
     z-index: -2;
     position: absolute;
     inset: 0;
-    background-image: var(--screen-background);
-    background-position: center;
+    background-position: center top;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
+
+    @media screen and (orientation: landscape) {
+      background-image: var(--screen-background-landscape);
+    }
+
+    @media screen and (orientation: portrait) {
+      background-image: var(--screen-background-portrait);
+    }
   }
 
   &::after {

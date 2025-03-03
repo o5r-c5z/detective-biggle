@@ -4,8 +4,15 @@
   --episode-quiz__question-correction-height: calc(
     var(--default-line-height) * 1em
   );
-  --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
   --episode-quiz__answer-label-border-width: 2px;
+
+  @media screen and (orientation: landscape) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
+  }
+
+  @media screen and (orientation: portrait) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
+  }
 
   display: flex;
   flex-direction: column;
@@ -63,7 +70,9 @@
   --background-color: var(--white-color);
   --font-size: #{figma-font-size-to-rem(35)};
   cursor: pointer;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--spacer);
   border: var(--episode-quiz__answer-label-border-width) solid var(--grey-color);
   border-radius: figma-radius-to-rem(30);
   padding: calc(var(--spacer) * 1.5) var(--episode-quiz__answer-label-padding-x);
@@ -77,11 +86,10 @@
     content: "";
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
     border: 2px solid var(--background-color);
     border-radius: 50%;
-    width: var(--font-size);
     height: var(--font-size);
+    aspect-ratio: 1 / 1;
     box-shadow: 0 0 0 1px var(--black-color);
   }
 
@@ -133,14 +141,22 @@
 .episode-quiz__clues {
   --gap: var(--spacer);
   display: flex;
-  gap: var(--gap);
+  flex-wrap: wrap;
   justify-content: center;
+  gap: var(--gap);
 
   .btn-plain {
     border-radius: figma-radius-to-rem(30);
     padding: 1.5rem;
-    width: 25%;
     color: var(--text-color);
+
+    @media screen and (orientation: landscape) {
+      width: 25%;
+    }
+
+    @media screen and (orientation: portrait) {
+      width: calc(50% - var(--gap));
+    }
 
     &:nth-child(1) {
       background-color: var(--green-color);

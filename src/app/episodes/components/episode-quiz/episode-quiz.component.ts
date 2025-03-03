@@ -18,9 +18,14 @@ export class EpisodeQuizComponent implements OnInit {
   protected quizStep?: number;
 
   @HostBinding('class.screen')
-  @HostBinding('style.--screen-background')
-  get backgroundImage() {
-    return `url("/images/Ecran_UI.jpg")`;
+  @HostBinding('style.--screen-background-landscape')
+  get backgroundImageLandscape() {
+    return `url("/images/landscape/Ecran_UI.jpg")`;
+  }
+
+  @HostBinding('style.--screen-background-portrait')
+  get backgroundImagePortrait() {
+    return `url("/images/portrait/Ecran_UI.jpg")`;
   }
 
   @HostBinding('style.--screen-background-overlay-opacity')

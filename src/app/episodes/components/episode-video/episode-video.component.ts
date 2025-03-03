@@ -42,11 +42,18 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('playerContainer') playerContainer!: ElementRef;
 
   @HostBinding('class.screen')
-  @HostBinding('style.--screen-background')
-  get backgroundImage() {
+  @HostBinding('style.--screen-background-landscape')
+  get backgroundImageLandscape() {
     return !this.videoEnded
-      ? `url("/images/Tableau_UI.jpg")`
-      : `url("/images/Decors_Bureau 1.jpg")`;
+      ? `url("/images/landscape/Tableau_UI.jpg")`
+      : `url("/images/landscape/Decors_Bureau 1.jpg")`;
+  }
+
+  @HostBinding('style.--screen-background-portrait')
+  get backgroundImagePortrait() {
+    return !this.videoEnded
+      ? `url("/images/portrait/Tableau_UI.jpg")`
+      : `url("/images/portrait/decor_bureau.jpg")`;
   }
 
   @HostBinding('style.--screen-background-overlay-opacity')
