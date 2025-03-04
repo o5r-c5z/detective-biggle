@@ -58,7 +58,8 @@ body {
   font-optical-sizing: auto;
 }
 
-.visually-hidden {
+.visually-hidden,
+.cdk-visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
