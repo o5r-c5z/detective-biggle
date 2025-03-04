@@ -1,42 +1,15 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AnnouncementService implements OnDestroy {
-  private liveElement: HTMLElement;
+export class AnnouncementService {
+  constructor(private liveAnnouncer: LiveAnnouncer) {}
   
-  constructor(@Inject(DOCUMENT) private document: Document) {
-    // Create a live region for accessibility announcements
-    this.liveElement = this.document.createElement('div');
-    this.liveElement.setAttribute('aria-live', 'polite');
-    this.liveElement.setAttribute('aria-atomic', 'true');
-    this.liveElement.setAttribute('class', 'sr-only');
-    this.document.body.appendChild(this.liveElement);
-  }
-  
-  /**
-   * Announce a message to screen readers
-   * @param message The message to announce
-   */
   announce(message: string): void {
-    // Clear previous announcements
-    this.liveElement.textContent = '';
-    
-    // Force browser to pause before adding new announcement
-    setTimeout(() => {
-      this.liveElement.textContent = message;
-      console.log(message);
-    }, 100);
-  }
-  
-  /**
-   * Clean up the live region when service is destroyed
-   */
-  ngOnDestroy(): void {
-    if (this.liveElement && this.liveElement.parentNode) {
-      this.liveElement.parentNode.removeChild(this.liveElement);
-    }
+    this.liveAnnouncer.announce(message);
+    console.debug(message);
   }
 } 

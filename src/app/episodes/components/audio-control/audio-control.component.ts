@@ -10,7 +10,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faVolumeHigh, faVolumeXmark } from '@fortawesome/free-solid-svg-icons';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { AnnouncementService } from '../../services/announcement.service';
 import { AudioService } from '../../services/audio.service';
 
@@ -55,15 +55,17 @@ export class AudioControlComponent implements OnInit, OnDestroy {
       this.showKeyboardHint = false;
     }, 5000);
 
-    this.audioSubscription = this.audioService.isPlaying$.subscribe(
-      (isPlaying) => {
+    this.audioSubscription = this.audioService.isPlaying$
+      .pipe(distinctUntilChanged())
+      .subscribe((isPlaying) => {
         if (isPlaying) {
-          this.announcementService.announce('Musique de fond en cours');
+          this.announcementService.announce('Lecture de la musique de fond');
         } else {
-          this.announcementService.announce('Musique de fond mise en pause');
+          this.announcementService.announce(
+            'Mise en pause de la musique de fond',
+          );
         }
-      },
-    );
+      });
   }
 
   @HostListener('document:keydown', ['$event'])
