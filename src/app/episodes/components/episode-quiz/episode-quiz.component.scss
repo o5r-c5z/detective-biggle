@@ -45,10 +45,6 @@
 }
 
 .episode-quiz__answer-input {
-  position: fixed;
-  opacity: 0;
-  pointer-events: none;
-
   &:focus-visible {
     & + .episode-quiz__answer-label {
       outline: 3px solid var(--ultramarine-blue-color);

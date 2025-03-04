@@ -17,7 +17,7 @@
             [attr.data-question-index]="qIndex"
             [attr.data-answer-index]="aIndex"
             value="{{ aIndex }}"
-            class="episode-quiz__answer-input"
+            class="episode-quiz__answer-input cdk-visually-hidden"
             [class.correct]="aIndex === question.correctAnswer"
             [attr.aria-checked]="false"
             [attr.aria-describedby]="
