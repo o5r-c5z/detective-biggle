@@ -1,4 +1,5 @@
-@use "../../../../styles/figma-functions" as figma;
+@use "../../../../styles/figma";
+@use "../../../../styles/a11y";
 
 :host {
   --episode-quiz__question-correction-height: calc(
@@ -47,8 +48,7 @@
 .episode-quiz__answer-input {
   &:focus-visible {
     & + .episode-quiz__answer-label {
-      outline: 3px solid var(--ultramarine-blue-color);
-      outline-offset: 0;
+      @include a11y.focus-outline;
     }
   }
 }

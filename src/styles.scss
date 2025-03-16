@@ -1,9 +1,11 @@
 @use "@angular/cdk";
 @use "normalize.css";
-@use "./styles/figma-functions" as figma;
-@use "./styles/reset-fieldset";
+@use "./styles/a11y";
+@use "./styles/figma";
+@use "./styles/reset";
 
 @include cdk.a11y-visually-hidden();
+@include reset.reset-fieldset;
 
 html {
   --beige-color: #e6dccf;
@@ -123,6 +125,5 @@ body {
 
 :focus-visible {
   border-color: var(--white-color) !important;
-  outline: 3px solid var(--ultramarine-blue-color);
-  outline-offset: 0;
+  @include a11y.focus-outline;
 }
