@@ -1,7 +1,11 @@
 @if (episode) {
   <form #form aria-label="Quiz" (keydown.enter)="onValidateAnswer($event)">
     @for (question of episode.questions; track question; let qIndex = $index) {
-      <fieldset class="episode-quiz__question" [hidden]="quizStep !== qIndex">
+      <fieldset
+        class="episode-quiz__question"
+        [hidden]="quizStep !== qIndex"
+        aria-required="true"
+      >
         <legend class="episode-quiz__question-label">
           <span class="episode-quiz__step"
             >{{ qIndex + 1 }} / {{ episode.questions.length }}</span
