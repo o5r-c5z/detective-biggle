@@ -6,14 +6,6 @@
   );
   --episode-quiz__answer-label-border-width: 2px;
 
-  @media screen and (orientation: landscape) {
-    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
-  }
-
-  @media screen and (orientation: portrait) {
-    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
-  }
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,6 +23,14 @@
       31,
       var(--screen-background-overlay-opacity)
     );
+  }
+
+  @media screen and (orientation: landscape) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
+  }
+
+  @media screen and (orientation: portrait) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
   }
 }
 
