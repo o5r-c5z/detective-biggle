@@ -1,4 +1,4 @@
-@import "../../../../styles/figma-functions";
+@use "../../../../styles/figma";
 
 .episode-title-screen__links {
   --image-ratio: 843 / 846;
@@ -29,7 +29,7 @@
   }
 
   .btn {
-    border-radius: figma-radius-to-rem(40);
-    font-size: figma-font-size-to-rem(37);
+    border-radius: figma.figma-radius-to-rem(40);
+    font-size: figma.figma-font-size-to-rem(37);
   }
 }

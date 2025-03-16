@@ -6,10 +6,11 @@
 @if (!videoEnded) {
   @if (videoType !== VideoType.Resolution) {
     <a
+      id="episode-video__exit-btn"
       class="btn btn-plain"
       (click)="restartBackgroundMusic()"
       [routerLink]="['../quiz']"
-      aria-label="Quitter la vidéo et lancer le quiz"
+      tabindex="0"
     >
       @if (videoType === VideoType.Clue) {
         Retourner au quiz
@@ -25,7 +26,6 @@
       class="btn btn-plain"
       [routerLink]="['../quiz']"
       aria-label="Lancer le quiz"
-      tabindex="0"
     >
       Lancer le quiz !
     </a>
@@ -33,7 +33,6 @@
       class="btn btn-plain"
       (click)="restartVideo()"
       aria-label="Revoir toute la vidéo"
-      tabindex="0"
     >
       <fa-icon [icon]="faArrowRotateLeft" aria-hidden="true"></fa-icon>
       Revoir toute la vidéo
@@ -43,7 +42,6 @@
       [routerLink]="['../video']"
       [queryParams]="{ videoType: 'pedagogicalConcept' }"
       aria-label="Revoir le concept pédagogique"
-      tabindex="0"
     >
       <fa-icon [icon]="faArrowRotateLeft" aria-hidden="true"></fa-icon>
       Revoir le concept pédagogique

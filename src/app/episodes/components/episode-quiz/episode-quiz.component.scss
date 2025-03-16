@@ -1,4 +1,5 @@
-@import "../../../../styles/figma-functions";
+@use "../../../../styles/figma";
+@use "../../../../styles/a11y";
 
 :host {
   --episode-quiz__question-correction-height: calc(
@@ -6,19 +7,15 @@
   );
   --episode-quiz__answer-label-border-width: 2px;
 
-  @media screen and (orientation: landscape) {
-    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
-  }
-
-  @media screen and (orientation: portrait) {
-    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
-  }
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: var(--spacer);
   padding: 0 10%;
+
+  &::before {
+    background-position: bottom;
+  }
 
   &::after {
     background-color: rgba(
@@ -27,6 +24,14 @@
       31,
       var(--screen-background-overlay-opacity)
     );
+  }
+
+  @media screen and (orientation: landscape) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
+  }
+
+  @media screen and (orientation: portrait) {
+    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
   }
 }
 
@@ -41,7 +46,11 @@
 }
 
 .episode-quiz__answer-input {
-  display: none;
+  &:focus-visible {
+    & + .episode-quiz__answer-label {
+      @include a11y.focus-outline;
+    }
+  }
 }
 
 .episode-quiz__question-label {
@@ -49,36 +58,36 @@
     var(--spacer) + var(--episode-quiz__question-correction-height)
   );
   border: 8px solid var(--white-color);
-  border-radius: figma-radius-to-rem(30);
+  border-radius: figma.figma-radius-to-rem(30);
   padding: calc(var(--spacer) * 1.5);
   width: 100%;
   background-color: var(--beige-color);
   color: #2b262d;
-  font-size: figma-font-size-to-rem(45);
+  font-size: figma.figma-font-size-to-rem(35);
   font-weight: 600;
   text-align: center;
 
   .episode-quiz__step {
     display: block;
     margin-bottom: var(--spacer);
-    font-size: figma-font-size-to-rem(35);
+    font-size: 0.75em;
     font-weight: 500;
   }
 }
 
 .episode-quiz__answer-label {
   --background-color: var(--white-color);
-  --font-size: #{figma-font-size-to-rem(35)};
+  --font-size: #{figma.figma-font-size-to-rem(35)};
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: var(--spacer);
   border: var(--episode-quiz__answer-label-border-width) solid var(--grey-color);
-  border-radius: figma-radius-to-rem(30);
+  border-radius: figma.figma-radius-to-rem(30);
   padding: calc(var(--spacer) * 1.5) var(--episode-quiz__answer-label-padding-x);
   background-color: var(--background-color);
   color: var(--text-color);
-  font-size: var(--font-size); 
+  font-size: var(--font-size);
   text-align: left;
   position: relative;
 
@@ -94,6 +103,15 @@
   }
 
   .episode-quiz__answer-input:checked + & {
+    border-color: var(--black-color);
+
+    &::before {
+      background-color: var(--black-color);
+      box-shadow: 0 0 0 1px var(--black-color);
+    }
+  }
+
+  .episode-quiz__answer-input.active:checked + & {
     --background-color: var(--light-danger-color);
     border-color: var(--danger-color);
 
@@ -104,7 +122,7 @@
     }
   }
 
-  .episode-quiz__answer-input.correct:checked + & {
+  .episode-quiz__answer-input.active.correct:checked + & {
     --background-color: var(--light-success-color);
     border-color: var(--success-color);
 
@@ -138,24 +156,35 @@
   }
 }
 
+.episode-quiz__validate-answer-btn {
+  border-radius: figma.figma-radius-to-rem(30);
+  padding: 1rem;
+  width: 100%;
+  background-color: var(--ultramarine-blue-color);
+}
+
 .episode-quiz__clues {
   --gap: var(--spacer);
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: var(--gap);
+  justify-content: center;
+  margin-top: calc(
+    var(--spacer) + var(--episode-quiz__question-correction-height)
+  );
 
-  .btn-plain {
-    border-radius: figma-radius-to-rem(30);
-    padding: 1.5rem;
+  .btn {
+    border-radius: figma.figma-radius-to-rem(30);
+    padding: 1rem;
     color: var(--text-color);
+    font-size: figma.figma-font-size-to-rem(25);
 
     @media screen and (orientation: landscape) {
-      width: 25%;
+      width: calc(25% - var(--gap) * 3 / 4);
     }
 
     @media screen and (orientation: portrait) {
-      width: calc(50% - var(--gap));
+      width: calc(50% - var(--gap) / 2);
     }
 
     &:nth-child(1) {
@@ -171,7 +200,7 @@
     }
 
     &:nth-child(4) {
-      background-color: var(--ultramarine-blue-color);
+      background-color: var(--royal-blue-color);
     }
   }
 }

@@ -1,7 +1,11 @@
 @if (episode) {
-  <form aria-label="Quiz">
+  <form #form aria-label="Quiz" (keydown.enter)="onValidateAnswer($event)">
     @for (question of episode.questions; track question; let qIndex = $index) {
-      <fieldset class="episode-quiz__question" [hidden]="quizStep !== qIndex">
+      <fieldset
+        class="episode-quiz__question"
+        [hidden]="quizStep !== qIndex"
+        aria-required="true"
+      >
         <legend class="episode-quiz__question-label">
           <span class="episode-quiz__step"
             >{{ qIndex + 1 }} / {{ episode.questions.length }}</span
@@ -14,14 +18,16 @@
             id="question-{{ qIndex }}-answer-{{ aIndex }}"
             type="radio"
             name="question-{{ qIndex }}"
+            [attr.data-question-index]="qIndex"
+            [attr.data-answer-index]="aIndex"
             value="{{ aIndex }}"
-            class="episode-quiz__answer-input"
+            class="episode-quiz__answer-input cdk-visually-hidden"
             [class.correct]="aIndex === question.correctAnswer"
             [attr.aria-checked]="false"
             [attr.aria-describedby]="
               'question-' + qIndex + '-answer-' + aIndex + '-correction'
             "
-            (change)="onAnswerSelected($event, qIndex, aIndex)"
+            tabindex="0"
           />
           <label
             for="question-{{ qIndex }}-answer-{{ aIndex }}"
@@ -43,6 +49,14 @@
             </span>
           </p>
         }
+        <button
+          type="button"
+          class="episode-quiz__validate-answer-btn btn btn-plain"
+          (click)="onValidateAnswer($event)"
+          tabindex="0"
+        >
+          Valider ma réponse
+        </button>
       </fieldset>
     }
   </form>
@@ -53,6 +67,7 @@
         class="btn btn-plain"
         [routerLink]="['../video']"
         [queryParams]="{ videoType: 'clue', clue: cIndex }"
+        tabindex="0"
       >
         Revoir indice {{ cIndex + 1 }}
       </a>

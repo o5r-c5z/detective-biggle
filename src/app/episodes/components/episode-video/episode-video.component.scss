@@ -1,11 +1,18 @@
-@import "../../../../styles/figma-functions";
+@use "../../../../styles/figma";
 
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacer);
+
+  @media screen and (orientation: landscape) {
+    gap: var(--spacer);
+  }
+
+  @media screen and (orientation: portrait) {
+    gap: calc(var(--spacer) * 3);
+  }
 
   &::after {
     background-color: rgba(
@@ -18,9 +25,20 @@
 }
 
 #episode-video__player-container {
-  width: 75%;
   text-align: center;
   overflow: hidden;
+
+  @media screen and (orientation: landscape) {
+    width: 75%;
+  }
+
+  @media screen and (orientation: portrait) {
+    width: 90%;
+  }
+}
+
+#episode-video__exit-btn {
+  padding: 1.5rem;
 }
 
 .episode-video__nav {
@@ -37,7 +55,7 @@
 }
 
 .btn {
-  border-radius: figma-radius-to-rem(40);
+  border-radius: figma.figma-radius-to-rem(40);
   padding-top: 2rem;
   padding-bottom: 2rem;
 

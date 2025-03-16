@@ -101,9 +101,6 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
           }
 
           this.audioService.pause();
-          this.announcementService.announce(
-            'Musique de fond mise en pause. Nouvelle vidéo en cours de lecture.',
-          );
         }),
       )
       .subscribe(() => {
@@ -116,7 +113,6 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
 
   protected restartBackgroundMusic(): void {
     this.audioService.play(true);
-    this.announcementService.announce('Reprise de la musique de fond.');
   }
 
   private initializePlayer() {
@@ -140,8 +136,6 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
         iframe.setAttribute('aria-label', `Vidéo: ${videoTitle}`);
         iframe.focus();
       }
-
-      this.announcementService.announce(`Vidéo chargée: ${videoTitle}`);
     });
 
     this.player.play();
@@ -152,7 +146,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
     });
 
     this.player.on('pause', () => {
-      this.announcementService.announce('Vidéo mise en pause');
+      this.announcementService.announce('Mise en pause de la vidéo');
     });
 
     this.player.on('ended', () => {
@@ -173,9 +167,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
         this.destroyPlayer();
 
         this.restartBackgroundMusic();
-        this.announcementService.announce(
-          'Vidéo terminée. Reprise de la musique de fond.',
-        );
+        this.announcementService.announce('Vidéo terminée');
 
         setTimeout(() => {
           const firstButton = document.getElementById(
@@ -197,9 +189,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
     this.videoEnded = false;
     this.initializePlayer();
     this.audioService.pause();
-    this.announcementService.announce(
-      'Redémarrage de la vidéo. Musique de fond mise en pause.',
-    );
+    this.announcementService.announce('Redémarrage de la vidéo');
     this.player?.play();
   }
 
@@ -207,7 +197,7 @@ export class EpisodeVideoComponent implements AfterViewInit, OnDestroy {
     this.videoEnded = false;
     this.audioService.pause();
     this.announcementService.announce(
-      'Changement vers la vidéo du concept pédagogique. Musique de fond mise en pause.',
+      'Changement vers la vidéo du concept pédagogique',
     );
     this.player?.play();
   }
