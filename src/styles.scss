@@ -1,10 +1,9 @@
-@use '@angular/cdk';
-@use 'normalize.css';
-@use './styles/figma-functions' as figma;
-@use './styles/reset-fieldset';
+@use "@angular/cdk";
+@use "normalize.css";
+@use "./styles/figma-functions" as figma;
+@use "./styles/reset-fieldset";
 
 @include cdk.a11y-visually-hidden();
-
 
 html {
   --beige-color: #e6dccf;
@@ -38,7 +37,7 @@ html {
   color: var(--default-text-color);
   line-height: var(--default-line-height);
   box-sizing: border-box;
-  
+
   @media screen and (orientation: landscape) {
     font-size: 1.1vw;
   }
@@ -60,6 +59,10 @@ body {
   background-color: var(--default-background-color);
   font-family: "Golos Text", sans-serif;
   font-optical-sizing: auto;
+
+  @supports (-webkit-touch-callout: none) {
+    height: -webkit-fill-available;
+  }
 }
 
 .btn {
