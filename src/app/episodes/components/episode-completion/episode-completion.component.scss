@@ -1,4 +1,4 @@
-@import "../../../../styles/figma-functions";
+@use "../../../../styles/figma-functions" as figma;
 
 :host {
   --episode-quiz__question-correction-height: calc(
@@ -27,7 +27,7 @@
 h2,
 p {
   margin: 0;
-  font-size: figma-font-size-to-rem(90);
+  font-size: figma.figma-font-size-to-rem(90);
   font-weight: bold;
   text-align: center;
 }

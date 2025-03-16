@@ -1,9 +1,9 @@
 @use '@angular/cdk';
-@include cdk.a11y-visually-hidden();
+@use 'normalize.css';
+@use './styles/figma-functions' as figma;
+@use './styles/reset-fieldset';
 
-@import "normalize.css";
-@import "./styles/_figma-functions";
-@import "./styles/reset-fieldset";
+@include cdk.a11y-visually-hidden();
 
 
 html {
@@ -73,7 +73,7 @@ body {
   background-color: transparent;
   color: var(--default-text-color);
   cursor: pointer;
-  font-size: figma-font-size-to-rem(35);
+  font-size: figma.figma-font-size-to-rem(35);
   font-weight: bold;
   text-align: center;
   text-decoration: none;

@@ -1,4 +1,4 @@
-@import "../../../../styles/figma-functions";
+@use "../../../../styles/figma-functions" as figma;
 
 :host {
   display: flex;
@@ -55,7 +55,7 @@
 }
 
 .btn {
-  border-radius: figma-radius-to-rem(40);
+  border-radius: figma.figma-radius-to-rem(40);
   padding-top: 2rem;
   padding-bottom: 2rem;
 
