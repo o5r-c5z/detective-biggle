@@ -65,7 +65,7 @@ export class EpisodeComponent implements OnInit, OnDestroy {
   }
 
   private loadEpisode(episodeNumber: number) {
-    fetch(`episodes/${episodeNumber}/episode.json`)
+    fetch(`uploads/episodes/${episodeNumber}/episode.json`)
       .then((response) => response.json())
       .then((episodeData) => {
         this.episode = episodeData;
