@@ -10,6 +10,7 @@
       class="btn btn-plain"
       (click)="restartBackgroundMusic()"
       [routerLink]="['../quiz']"
+      tabindex="0"
     >
       @if (videoType === VideoType.Clue) {
         Retourner au quiz

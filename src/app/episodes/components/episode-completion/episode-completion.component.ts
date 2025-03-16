@@ -39,7 +39,6 @@ export class EpisodeCompletionComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.resetQuizButton.nativeElement.focus();
-    this.resetQuizButton.nativeElement.classList.add(':focus-visible');
   }
 
   protected resetQuiz() {

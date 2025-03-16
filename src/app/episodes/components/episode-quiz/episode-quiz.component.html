@@ -23,6 +23,7 @@
             [attr.aria-describedby]="
               'question-' + qIndex + '-answer-' + aIndex + '-correction'
             "
+            tabindex="0"
           />
           <label
             for="question-{{ qIndex }}-answer-{{ aIndex }}"
@@ -48,6 +49,7 @@
           type="button"
           class="episode-quiz__validate-answer-btn btn btn-plain"
           (click)="onValidateAnswer($event)"
+          tabindex="0"
         >
           Valider ma réponse
         </button>
@@ -61,6 +63,7 @@
         class="btn btn-plain"
         [routerLink]="['../video']"
         [queryParams]="{ videoType: 'clue', clue: cIndex }"
+        tabindex="0"
       >
         Revoir indice {{ cIndex + 1 }}
       </a>

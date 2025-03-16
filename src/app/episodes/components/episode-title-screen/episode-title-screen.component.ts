@@ -58,7 +58,6 @@ export class EpisodeTitleScreenComponent implements OnInit, OnDestroy {
   private focusFirstButton(): void {
     setTimeout(() => {
       this.goToEpisodeButton.nativeElement.focus();
-      this.goToEpisodeButton.nativeElement.classList.add(':focus-visible');
     });
   }
 }

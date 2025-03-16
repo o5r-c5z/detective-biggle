@@ -75,7 +75,6 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
       
       if (firstRadioInput) {
         firstRadioInput.focus();
-        firstRadioInput.classList.add(':focus-visible');
       }
     });
   }

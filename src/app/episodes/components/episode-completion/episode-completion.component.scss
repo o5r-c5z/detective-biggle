@@ -34,7 +34,7 @@ p {
 
 .btn {
   margin-top: calc(var(--spacer) * 1.5);
-  border-radius: figma-radius-to-rem(50);
+  border-radius: figma.figma-radius-to-rem(50);
   padding: 2.5rem;
-  font-size: figma-font-size-to-rem(32);
+  font-size: figma.figma-font-size-to-rem(32);
 }
