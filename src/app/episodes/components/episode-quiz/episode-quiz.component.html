@@ -2,7 +2,8 @@
   <form #form aria-label="Quiz" (keydown.enter)="onValidateAnswer($event)">
     @for (question of episode.questions; track question; let qIndex = $index) {
       <fieldset
-        class="episode-quiz__question"
+        class="episode-quiz__question hidden"
+        [style.--animation-duration]="animationDuration + 's'"
         [hidden]="quizStep !== qIndex"
         aria-required="true"
       >

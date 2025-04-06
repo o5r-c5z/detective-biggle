@@ -5,7 +5,7 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -30,6 +30,7 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
 
   protected episode?: Episode;
   protected quizStep: number = 0;
+  protected animationDuration: number = 0.3;
 
   @HostBinding('class.screen')
   @HostBinding('style.--screen-background-landscape')
@@ -58,6 +59,7 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
       .subscribe((quizStep: number) => {
         this.quizStep = quizStep;
         this.focusFirstInput();
+        this.showNextQuestion();
       });
   }
 
@@ -72,10 +74,19 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
       const firstRadioInput = this.form.nativeElement.querySelector(
         'fieldset:not([hidden]) input:first-of-type',
       ) as HTMLInputElement;
-      
+
       if (firstRadioInput) {
         firstRadioInput.focus();
       }
+    });
+  }
+
+  private showNextQuestion(): void {
+    setTimeout(() => {
+      const fieldset = this.form.nativeElement.querySelector(
+        `fieldset:not([hidden])`,
+      ) as HTMLFieldSetElement;
+      fieldset.classList.remove('hidden');
     });
   }
 
@@ -122,14 +133,19 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
         fieldset.disabled = true;
       }
       setTimeout(() => {
-        this.episodeService.incrementQuizStep();
+        fieldset?.classList.add('hiding');
 
-        if (this.episodeService.isQuizComplete()) {
-          this.router.navigate(['../video'], {
-            queryParams: { videoType: 'resolution' },
-            relativeTo: this.route,
-          });
-        }
+        setTimeout(() => {
+          fieldset?.classList.remove('hiding');
+          this.episodeService.incrementQuizStep();
+
+          if (this.episodeService.isQuizComplete()) {
+            this.router.navigate(['../video'], {
+              queryParams: { videoType: 'resolution' },
+              relativeTo: this.route,
+            });
+          }
+        }, this.animationDuration * 1000);
       }, 2000);
     } else {
       setTimeout(() => {
