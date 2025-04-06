@@ -1,15 +1,16 @@
 import {
   Component,
+  DestroyRef,
   ElementRef,
   HostBinding,
   inject,
-  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { mergeMap, tap } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { concatMap, mergeMap, tap } from 'rxjs/operators';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
 
@@ -19,11 +20,11 @@ import { EpisodeService } from '../../services/episode.service';
   templateUrl: './episode-quiz.component.html',
   styleUrl: './episode-quiz.component.scss',
 })
-export class EpisodeQuizComponent implements OnInit, OnDestroy {
+export class EpisodeQuizComponent implements OnInit {
   private readonly episodeService = inject(EpisodeService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private subscription?: Subscription;
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('form')
   protected form!: ElementRef<HTMLFormElement>;
@@ -49,12 +50,13 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.episodeService.episode$
+    this.episodeService.episode$
       .pipe(
         tap((episode?: Episode) => {
           this.episode = episode;
         }),
         mergeMap(() => this.episodeService.quizStep$),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((quizStep: number) => {
         this.quizStep = quizStep;
@@ -63,31 +65,29 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   private focusFirstInput(): void {
-    setTimeout(() => {
-      const firstRadioInput = this.form.nativeElement.querySelector(
-        'fieldset:not([hidden]) input:first-of-type',
-      ) as HTMLInputElement;
+    timer(100)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const firstRadioInput = this.form.nativeElement.querySelector(
+          'fieldset:not([hidden]) input:first-of-type',
+        ) as HTMLInputElement;
 
-      if (firstRadioInput) {
-        firstRadioInput.focus();
-      }
-    });
+        if (firstRadioInput) {
+          firstRadioInput.focus();
+        }
+      });
   }
 
   private showNextQuestion(): void {
-    setTimeout(() => {
-      const fieldset = this.form.nativeElement.querySelector(
-        `fieldset:not([hidden])`,
-      ) as HTMLFieldSetElement;
-      fieldset.classList.remove('hidden');
-    });
+    timer(100)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const fieldset = this.form.nativeElement.querySelector(
+          'fieldset:not([hidden])',
+        ) as HTMLFieldSetElement;
+        fieldset.classList.remove('hidden');
+      });
   }
 
   protected onValidateAnswer($event: Event) {
@@ -132,27 +132,33 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
       if (fieldset) {
         fieldset.disabled = true;
       }
-      setTimeout(() => {
-        fieldset?.classList.add('hiding');
 
-        setTimeout(() => {
-          fieldset?.classList.remove('hiding');
-          this.episodeService.incrementQuizStep();
-
-          if (this.episodeService.isQuizComplete()) {
-            this.router.navigate(['../video'], {
-              queryParams: { videoType: 'resolution' },
-              relativeTo: this.route,
-            });
-          }
-        }, this.animationDuration * 1000);
-      }, 2000);
+      this.handleCorrectAnswer(fieldset as HTMLFieldSetElement);
     } else {
-      setTimeout(() => {
-        if (correction) {
-          correction.classList.remove('active');
-        }
-      }, 2000);
+      timer(2000)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          correction?.classList.remove('active');
+        });
     }
+  }
+
+  private handleCorrectAnswer(fieldset: HTMLFieldSetElement): void {
+    timer(2000).pipe(
+      tap(() => fieldset.classList.add('hiding')),
+      concatMap(() => timer(this.animationDuration * 1000)),
+      tap(() => {
+        fieldset.classList.remove('hiding');
+        this.episodeService.incrementQuizStep();
+
+        if (this.episodeService.isQuizComplete()) {
+          this.router.navigate(['../video'], {
+            queryParams: { videoType: 'resolution' },
+            relativeTo: this.route,
+          });
+        }
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 }
