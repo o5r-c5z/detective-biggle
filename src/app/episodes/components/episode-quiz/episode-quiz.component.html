@@ -63,11 +63,21 @@
   </form>
 
   <nav class="episode-quiz__clues">
+    <a
+      class="btn btn-plain"
+      [routerLink]="['../video']"
+      [queryParams]="{ videoType: 'pedagogicalConcept' }"
+      aria-label="Revoir le cours d’Owliver"
+      tabindex="0"
+    >
+      Revoir le cours d’Owliver
+    </a>
     @for (clue of episode.clues; track clue; let cIndex = $index) {
       <a
         class="btn btn-plain"
         [routerLink]="['../video']"
         [queryParams]="{ videoType: 'clue', clue: cIndex }"
+        [attr.aria-label]="'Revoir indice ' + (cIndex + 1)"
         tabindex="0"
       >
         Revoir indice {{ cIndex + 1 }}
