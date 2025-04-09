@@ -36,12 +36,18 @@ html {
   --button-min-width: 48px;
   --button-min-height: 48px;
 
+  box-sizing: border-box;
   color: var(--default-text-color);
   line-height: var(--default-line-height);
-  box-sizing: border-box;
 
   @media screen and (orientation: landscape) {
-    font-size: 1.1vw;
+    @media screen and (max-aspect-ratio: 16/9) {
+      font-size: 1.1vw;
+    }
+
+    @media screen and (min-aspect-ratio: 16/9) {
+      font-size: 1.95vh;
+    }
   }
 
   @media screen and (orientation: portrait) {
