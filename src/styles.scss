@@ -56,15 +56,14 @@ html {
 }
 
 body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
   background-color: var(--default-background-color);
   font-family: "Golos Text", sans-serif;
   font-optical-sizing: auto;
-
-  @supports (-webkit-touch-callout: none) {
-    max-height: -webkit-fill-available;
-  }
 }
 
 .btn {
@@ -99,7 +98,7 @@ body {
 
   &::before {
     content: "";
-    z-index: -2;
+    z-index: -10;
     position: absolute;
     inset: 0;
     background-position: center top;
