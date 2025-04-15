@@ -64,6 +64,10 @@ body {
   background-color: var(--default-background-color);
   font-family: "Golos Text", sans-serif;
   font-optical-sizing: auto;
+
+  @supports (-webkit-touch-callout: none) {
+    max-height: -webkit-fill-available;
+  }
 }
 
 .btn {
