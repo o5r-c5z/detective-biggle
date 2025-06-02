@@ -26,13 +26,7 @@
     );
   }
 
-  @media screen and (orientation: landscape) {
-    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
-  }
-
-  @media screen and (orientation: portrait) {
-    --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 1.5);
-  }
+  --episode-quiz__answer-label-padding-x: calc(var(--spacer) * 7.5);
 }
 
 .episode-quiz__question {
@@ -190,15 +184,9 @@
     border-radius: figma.figma-radius-to-rem(30);
     padding: 1rem;
     color: var(--text-color);
+    width: calc(25% - var(--gap) * 3 / 4);
     font-size: figma.figma-font-size-to-rem(25);
 
-    @media screen and (orientation: landscape) {
-      width: calc(25% - var(--gap) * 3 / 4);
-    }
-
-    @media screen and (orientation: portrait) {
-      width: calc(50% - var(--gap) / 2);
-    }
 
     &:nth-child(1) {
       background-color: var(--green-color);
