@@ -1,15 +1,16 @@
 import {
   Component,
+  DestroyRef,
   ElementRef,
   HostBinding,
   inject,
-  OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { mergeMap, tap } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { concatMap, mergeMap, tap } from 'rxjs/operators';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
 
@@ -19,17 +20,18 @@ import { EpisodeService } from '../../services/episode.service';
   templateUrl: './episode-quiz.component.html',
   styleUrl: './episode-quiz.component.scss',
 })
-export class EpisodeQuizComponent implements OnInit, OnDestroy {
+export class EpisodeQuizComponent implements OnInit {
   private readonly episodeService = inject(EpisodeService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private subscription?: Subscription;
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('form')
   protected form!: ElementRef<HTMLFormElement>;
 
   protected episode?: Episode;
   protected quizStep: number = 0;
+  protected animationDuration: number = 0.3;
 
   @HostBinding('class.screen')
   @HostBinding('style.--screen-background-landscape')
@@ -48,35 +50,44 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.episodeService.episode$
+    this.episodeService.episode$
       .pipe(
         tap((episode?: Episode) => {
           this.episode = episode;
         }),
         mergeMap(() => this.episodeService.quizStep$),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((quizStep: number) => {
         this.quizStep = quizStep;
         this.focusFirstInput();
+        this.showNextQuestion();
       });
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  private focusFirstInput(): void {
+    timer(100)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const firstRadioInput = this.form.nativeElement.querySelector(
+          'fieldset:not([hidden]) input:first-of-type',
+        ) as HTMLInputElement;
+
+        if (firstRadioInput) {
+          firstRadioInput.focus();
+        }
+      });
   }
 
-  private focusFirstInput(): void {
-    setTimeout(() => {
-      const firstRadioInput = this.form.nativeElement.querySelector(
-        'fieldset:not([hidden]) input:first-of-type',
-      ) as HTMLInputElement;
-      
-      if (firstRadioInput) {
-        firstRadioInput.focus();
-      }
-    });
+  private showNextQuestion(): void {
+    timer(100)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const fieldset = this.form.nativeElement.querySelector(
+          'fieldset:not([hidden])',
+        ) as HTMLFieldSetElement;
+        fieldset.classList.remove('hidden');
+      });
   }
 
   protected onValidateAnswer($event: Event) {
@@ -121,7 +132,23 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
       if (fieldset) {
         fieldset.disabled = true;
       }
-      setTimeout(() => {
+
+      this.handleCorrectAnswer(fieldset as HTMLFieldSetElement);
+    } else {
+      timer(2000)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          correction?.classList.remove('active');
+        });
+    }
+  }
+
+  private handleCorrectAnswer(fieldset: HTMLFieldSetElement): void {
+    timer(2000).pipe(
+      tap(() => fieldset.classList.add('hiding')),
+      concatMap(() => timer(this.animationDuration * 1000)),
+      tap(() => {
+        fieldset.classList.remove('hiding');
         this.episodeService.incrementQuizStep();
 
         if (this.episodeService.isQuizComplete()) {
@@ -130,13 +157,8 @@ export class EpisodeQuizComponent implements OnInit, OnDestroy {
             relativeTo: this.route,
           });
         }
-      }, 2000);
-    } else {
-      setTimeout(() => {
-        if (correction) {
-          correction.classList.remove('active');
-        }
-      }, 2000);
-    }
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 }

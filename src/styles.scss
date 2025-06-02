@@ -36,12 +36,12 @@ html {
   --button-min-width: 48px;
   --button-min-height: 48px;
 
+  box-sizing: border-box;
   color: var(--default-text-color);
   line-height: var(--default-line-height);
-  box-sizing: border-box;
 
   @media screen and (orientation: landscape) {
-    font-size: 1.1vw;
+    font-size: min(1vw, 1.7vh);
   }
 
   @media screen and (orientation: portrait) {
@@ -56,6 +56,9 @@ html {
 }
 
 body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
   background-color: var(--default-background-color);
@@ -99,7 +102,7 @@ body {
 
   &::before {
     content: "";
-    z-index: -2;
+    z-index: -10;
     position: absolute;
     inset: 0;
     background-position: center top;
