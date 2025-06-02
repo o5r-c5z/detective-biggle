@@ -10,23 +10,14 @@
   position: absolute;
   right: 0;
   bottom: 0;
+  padding: 6rem 2rem 0rem 5rem;
+  width: min(45%, var(--screen-landscape-max-width) * 0.45);
+  aspect-ratio: var(--image-ratio);
   background-image: url("/images/Fiche_01_UI_assets 1.png");
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
-  
-  @media screen and (orientation: landscape) {
-    padding: 6rem 2rem 0rem 5rem;
-    width: min(45%, var(--screen-landscape-max-width) * 0.45);
-    aspect-ratio: var(--image-ratio);
-  }
-
-  @media screen and (orientation: portrait) {
-    padding: 10rem 2.5rem 2.5rem;
-    width: 100vw;
-    background-position: right top;
-    background-size: 130%;
-  }
+  font-size: figma.figma-font-size-to-rem(37);
 
   .btn {
     border-radius: figma.figma-radius-to-rem(40);

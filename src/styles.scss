@@ -25,28 +25,21 @@ html {
   --shadow-color: rgba(0, 0, 0, 0.25);
   --default-background-color: var(--black-color);
   --default-text-color: var(--white-color);
-
+  
   --screen-ratio: 16 / 9;
   --screen-landscape-max-width: calc(100vh * calc(var(--screen-ratio)));
   --screen-landscape-width: min(100%, var(--screen-landscape-max-width));
-
+  
   --default-line-height: 1.15;
   --spacer: 1rem;
-
+  
   --button-min-width: 48px;
   --button-min-height: 48px;
-
+  
   box-sizing: border-box;
   color: var(--default-text-color);
-  line-height: var(--default-line-height);
-
-  @media screen and (orientation: landscape) {
-    font-size: min(1vw, 1.7vh);
-  }
-
-  @media screen and (orientation: portrait) {
-    font-size: 1.2vh;
-  }
+  font-size: min(1vw, 1.7vh);
+  line-height: var(--default-line-height);  
 }
 
 *,
@@ -64,7 +57,7 @@ body {
   background-color: var(--default-background-color);
   font-family: "Golos Text", sans-serif;
   font-optical-sizing: auto;
-
+  
   @supports (-webkit-touch-callout: none) {
     max-height: -webkit-fill-available;
   }
@@ -99,25 +92,18 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-
+  
   &::before {
     content: "";
     z-index: -10;
     position: absolute;
     inset: 0;
+    background-image: var(--screen-background-landscape);
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
-
-    @media screen and (orientation: landscape) {
-      background-image: var(--screen-background-landscape);
-    }
-
-    @media screen and (orientation: portrait) {
-      background-image: var(--screen-background-portrait);
-    }
   }
-
+  
   &::after {
     content: "";
     z-index: -1;
