@@ -13,6 +13,7 @@ import { timer } from 'rxjs';
 import { concatMap, mergeMap, tap } from 'rxjs/operators';
 import { Episode } from '../../models';
 import { EpisodeService } from '../../services/episode.service';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-episode-quiz',
@@ -21,10 +22,11 @@ import { EpisodeService } from '../../services/episode.service';
   styleUrl: './episode-quiz.component.scss',
 })
 export class EpisodeQuizComponent implements OnInit {
-  private readonly episodeService = inject(EpisodeService);
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
+  private readonly audioService = inject(AudioService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly episodeService = inject(EpisodeService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   @ViewChild('form')
   protected form!: ElementRef<HTMLFormElement>;
@@ -56,7 +58,7 @@ export class EpisodeQuizComponent implements OnInit {
           this.episode = episode;
         }),
         mergeMap(() => this.episodeService.quizStep$),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((quizStep: number) => {
         this.quizStep = quizStep;
@@ -135,30 +137,40 @@ export class EpisodeQuizComponent implements OnInit {
 
       this.handleCorrectAnswer(fieldset as HTMLFieldSetElement);
     } else {
-      timer(2000)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => {
-          correction?.classList.remove('active');
-        });
+      this.handleIncorrectAnswer(correction);
     }
   }
 
   private handleCorrectAnswer(fieldset: HTMLFieldSetElement): void {
-    timer(2000).pipe(
-      tap(() => fieldset.classList.add('hiding')),
-      concatMap(() => timer(this.animationDuration * 1000)),
-      tap(() => {
-        fieldset.classList.remove('hiding');
-        this.episodeService.incrementQuizStep();
+    this.audioService.playSoundEffect('/audio/Win 3.mp3');
 
-        if (this.episodeService.isQuizComplete()) {
-          this.router.navigate(['../video'], {
-            queryParams: { videoType: 'resolution' },
-            relativeTo: this.route,
-          });
-        }
-      }),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe();
+    timer(2000)
+      .pipe(
+        tap(() => fieldset.classList.add('hiding')),
+        concatMap(() => timer(this.animationDuration * 1000)),
+        tap(() => {
+          fieldset.classList.remove('hiding');
+          this.episodeService.incrementQuizStep();
+
+          if (this.episodeService.isQuizComplete()) {
+            this.router.navigate(['../video'], {
+              queryParams: { videoType: 'resolution' },
+              relativeTo: this.route,
+            });
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
+
+  private handleIncorrectAnswer(correction: HTMLElement | null): void {
+    this.audioService.playSoundEffect('/audio/App Negative.mp3');
+
+    timer(2000)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        correction?.classList.remove('active');
+      });
   }
 }
