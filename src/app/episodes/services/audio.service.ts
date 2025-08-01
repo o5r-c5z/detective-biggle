@@ -5,63 +5,65 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AudioService implements OnDestroy {
-  private audio: HTMLAudioElement | null = null;
+  private backgroundMusic: HTMLAudioElement | null = null;
   private soundEffects: HTMLAudioElement[] = [];
-  private _isPlaying = new BehaviorSubject<boolean>(false);
-  private _volume = new BehaviorSubject<number>(0.1);
+  private backgroundMusicVolume = new BehaviorSubject<number>(0.05);
+  private soundEffectsVolume = new BehaviorSubject<number>(0.5);
+  private isPlayingSubject = new BehaviorSubject<boolean>(false);
 
-  public isPlaying$ = this._isPlaying.asObservable();
-  public volume$ = this._volume.asObservable();
+  public isPlaying$ = this.isPlayingSubject.asObservable();
+  public musicVolume$ = this.backgroundMusicVolume.asObservable();
+  public soundEffectsVolume$ = this.soundEffectsVolume.asObservable();
 
   initBackgroundMusic(audioSource: string): void {
     if (!audioSource) {
       return;
     }
 
-    if (!this.audio) {
-      this.audio = new Audio(audioSource);
-      this.audio.loop = true;
-      this.audio.volume = this._volume.value;
-      this.audio.id = 'background-music';
-      this.audio.setAttribute('aria-hidden', 'true');
-      document.body.appendChild(this.audio);
+    if (!this.backgroundMusic) {
+      this.backgroundMusic = new Audio(audioSource);
+      this.backgroundMusic.loop = true;
+      this.backgroundMusic.volume = this.backgroundMusicVolume.value;
+      this.backgroundMusic.id = 'background-music';
+      this.backgroundMusic.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(this.backgroundMusic);
 
-      this.audio.addEventListener('error', (e) => {
+      this.backgroundMusic.addEventListener('error', (e) => {
         console.error('Error loading audio file:', e);
-        if (this.audio) {
+        if (this.backgroundMusic) {
           const errorCodes = [
             'MEDIA_ERR_ABORTED',
             'MEDIA_ERR_NETWORK',
             'MEDIA_ERR_DECODE',
             'MEDIA_ERR_SRC_NOT_SUPPORTED',
           ];
-          const error = this.audio.error;
+          const error = this.backgroundMusic.error;
           if (error) {
             console.error('Audio error code:', errorCodes[error.code - 1]);
           }
         }
       });
     } else {
-      this.audio.src = audioSource;
-      this.audio.load();
+      this.backgroundMusic.src = audioSource;
+      this.backgroundMusic.load();
     }
   }
 
   play(resetToBeginning: boolean = true): void {
-    if (!this.audio) {
+    if (!this.backgroundMusic) {
       return;
     }
 
     if (resetToBeginning) {
-      this.audio.currentTime = 0;
+      this.backgroundMusic.currentTime = 0;
     }
 
-    const playPromise = this.audio.play();
+    const playPromise = this.backgroundMusic.play();
 
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
-          this._isPlaying.next(true);
+          this.isPlayingSubject.next(true);
         })
         .catch((error) => {
           console.error('Error playing background music:', error);
@@ -72,10 +74,10 @@ export class AudioService implements OnDestroy {
             );
 
             const playOnInteraction = () => {
-              this.audio
+              this.backgroundMusic
                 ?.play()
                 .then(() => {
-                  this._isPlaying.next(true);
+                  this.isPlayingSubject.next(true);
                 })
                 .catch((e) => console.error('Still could not play audio:', e));
 
@@ -95,16 +97,16 @@ export class AudioService implements OnDestroy {
   }
 
   pause(): void {
-    if (!this.audio) {
+    if (!this.backgroundMusic) {
       return;
     }
 
-    this.audio.pause();
-    this._isPlaying.next(false);
+    this.backgroundMusic.pause();
+    this.isPlayingSubject.next(false);
   }
 
   toggle(): void {
-    if (this._isPlaying.value) {
+    if (this.isPlayingSubject.value) {
       this.pause();
     } else {
       this.play(false);
@@ -112,47 +114,89 @@ export class AudioService implements OnDestroy {
   }
 
   setVolume(volume: number): void {
-    if (!this.audio) {
+    if (!this.backgroundMusic) {
       return;
     }
 
     const newVolume = Math.min(Math.max(volume, 0), 1);
-    this.audio.volume = newVolume;
-    this._volume.next(newVolume);
+    this.backgroundMusic.volume = newVolume;
+    this.backgroundMusicVolume.next(newVolume);
   }
 
   getVolume(): number {
-    return this._volume.value;
+    return this.backgroundMusicVolume.value;
+  }
+
+  /**
+   * Set volume for background music
+   * @param volume - Volume level (0-1)
+   */
+  setMusicVolume(volume: number): void {
+    if (!this.backgroundMusic) {
+      return;
+    }
+
+    const newVolume = Math.min(Math.max(volume, 0), 1);
+    this.backgroundMusic.volume = newVolume;
+    this.backgroundMusicVolume.next(newVolume);
+  }
+
+  /**
+   * Get the current background music volume
+   */
+  getMusicVolume(): number {
+    return this.backgroundMusicVolume.value;
+  }
+
+  /**
+   * Set volume for sound effects
+   * @param volume - Volume level (0-1)
+   */
+  setSoundEffectsVolume(volume: number): void {
+    const newVolume = Math.min(Math.max(volume, 0), 1);
+    this.soundEffectsVolume.next(newVolume);
+    
+    // Update volume for all currently playing sound effects
+    this.soundEffects.forEach(sound => {
+      sound.volume = newVolume;
+    });
+  }
+
+  /**
+   * Get the current sound effects volume
+   */
+  getSoundEffectsVolume(): number {
+    return this.soundEffectsVolume.value;
   }
 
   isPlaying(): boolean {
-    return this._isPlaying.value;
+    return this.isPlayingSubject.value;
   }
 
   mute(): void {
-    if (!this.audio) {
+    if (!this.backgroundMusic) {
       return;
     }
 
-    this.audio.muted = true;
+    this.backgroundMusic.muted = true;
   }
 
   unmute(): void {
-    if (!this.audio) {
+    if (!this.backgroundMusic) {
       return;
     }
 
-    this.audio.muted = false;
+    this.backgroundMusic.muted = false;
   }
 
   isMuted(): boolean {
-    return this.audio?.muted ?? false;
+    return this.backgroundMusic?.muted ?? false;
   }
 
   /**
    * Play a one-shot sound effect while background music continues playing
    * @param audioSource - The path to the sound effect audio file
-   * @param volume - Optional volume for the sound effect (0-1), defaults to current volume
+   * @param volume - Optional volume for the sound effect (0-1), defaults to sound effects volume
    * @returns Promise that resolves when the sound starts playing
    */
   playSoundEffect(audioSource: string, volume?: number): Promise<void> {
@@ -161,7 +205,7 @@ export class AudioService implements OnDestroy {
     }
 
     const soundEffect = new Audio(audioSource);
-    soundEffect.volume = volume ?? this._volume.value;
+    soundEffect.volume = volume ?? this.soundEffectsVolume.value;
     soundEffect.id = `sound-effect-${Date.now()}`;
     soundEffect.setAttribute('aria-hidden', 'true');
     
@@ -219,33 +263,23 @@ export class AudioService implements OnDestroy {
     return this.soundEffects.length;
   }
 
-  /**
-   * Set volume for all sound effects
-   * @param volume - Volume level (0-1)
-   */
-  setSoundEffectsVolume(volume: number): void {
-    const newVolume = Math.min(Math.max(volume, 0), 1);
-    this.soundEffects.forEach(sound => {
-      sound.volume = newVolume;
-    });
-  }
-
   ngOnDestroy(): void {
-    if (this.audio) {
-      this.audio.pause();
-      this.audio.src = '';
+    if (this.backgroundMusic) {
+      this.backgroundMusic.pause();
+      this.backgroundMusic.src = '';
 
-      if (this.audio.parentNode) {
-        this.audio.parentNode.removeChild(this.audio);
+      if (this.backgroundMusic.parentNode) {
+        this.backgroundMusic.parentNode.removeChild(this.backgroundMusic);
       }
 
-      this.audio = null;
+      this.backgroundMusic = null;
     }
 
     // Clean up all sound effects
     this.stopAllSoundEffects();
 
-    this._isPlaying.complete();
-    this._volume.complete();
+    this.isPlayingSubject.complete();
+    this.backgroundMusicVolume.complete();
+    this.soundEffectsVolume.complete();
   }
 }
